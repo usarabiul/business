@@ -45,11 +45,11 @@ function welcomeTheme(){
 }
 
 function assetLink(){
-  return 'public/'.general()->theme;
+  return general()->theme;
 }
 
 function assetLinkAdmin(){
-  return 'public/'.general()->adminTheme;
+  return general()->adminTheme;
 }
 
 function geoData($type=null,$parent=null,$id=null){
