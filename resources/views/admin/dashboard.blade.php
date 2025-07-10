@@ -10,7 +10,7 @@
                 <div class="media align-items-center">
                     <div class="media-body me-2">
                         <h2 class="text-white font-w600">459</h2>
-                        <span class="text-white">Total Menus</span>
+                        <span class="text-white">Total Pages</span>
                     </div>
                     <div class="d-inline-block position-relative donut-chart-sale">
                         <span class="donut1" data-peity='{ "fill": ["rgb(255, 255, 255)", "rgba(255, 255, 255, 0)"],   "innerRadius": 41, "radius": 10}'>6/8</span>
@@ -32,8 +32,8 @@
             <div class="card-body">	
                 <div class="media align-items-center">
                     <div class="media-body me-2">
-                        <h2 class="text-white font-w600">$ 87,561</h2>
-                        <span class="text-white">Total Revenue</span>
+                        <h2 class="text-white font-w600">87,561</h2>
+                        <span class="text-white">Total Visits</span>
                     </div>
                     <div class="d-inline-block position-relative donut-chart-sale">
                         <span class="donut1" data-peity='{ "fill": ["rgb(255, 255, 255)", "rgba(255, 255, 255, 0)"],   "innerRadius": 41, "radius": 10}'>3/8</span>
@@ -54,7 +54,7 @@
                 <div class="media align-items-center">
                     <div class="media-body me-2">
                         <h2 class="text-white font-w600">247</h2>
-                        <span class="text-white">Total Oders</span>
+                        <span class="text-white">Total Services</span>
                     </div>
                     <div class="d-inline-block position-relative donut-chart-sale">
                         <span class="donut1" data-peity='{ "fill": ["rgb(255, 255, 255)", "rgba(255, 255, 255, 0)"],   "innerRadius": 41, "radius": 10}'>4/8</span>

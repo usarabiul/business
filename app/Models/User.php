@@ -134,7 +134,7 @@ class User extends Authenticatable
                 return $this->imageFile->file_url; 
              }
          }else{
-             return 'public/medies/profile.png';
+             return 'medies/profile.png';
          }
      }
      

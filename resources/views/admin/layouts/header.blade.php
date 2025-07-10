@@ -15,7 +15,7 @@
         <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
                 <div class="header-left">
-                    <div class="dashboard_bar"><span>Welcome to Sego Admin!</span></div>
+                    <div class="dashboard_bar"><span>Welcome to Bussiness!</span></div>
                 </div>
                 <ul class="navbar-nav header-right">
                     <!-- <li class="nav-item">
@@ -132,7 +132,7 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a href="./app-profile.html" class="dropdown-item ai-icon">
+                            <a href="{{route('admin.myProfile')}}" class="dropdown-item ai-icon">
                                 <svg
                                     id="icon-user1"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +151,7 @@
                                 </svg>
                                 <span class="ms-2">Profile </span>
                             </a>
-                            <a href="./page-login.html" class="dropdown-item ai-icon">
+                            <a href="javascript:void(0)" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item ai-icon">
                                 <svg
                                     id="icon-logout"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -171,6 +171,9 @@
                                 </svg>
                                 <span class="ms-2">Logout </span>
                             </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </div>
                     </li>
                 </ul>
