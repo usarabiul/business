@@ -207,7 +207,7 @@ function uploadFile($file,$src,$srcType,$fileUse,$author=null,$fileStatus=true){
     
     $name = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
     $fullname = basename($file->getClientOriginalName());
-    $ext =$file->getClientOriginalExtension();
+    $ext =strtolower($file->getClientOriginalExtension());
     $size =$file->getSize();
     $mimeType = $file->getMimeType();
 
