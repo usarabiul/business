@@ -73,7 +73,7 @@
                     <span class="nav-text">Apps Setting</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="index.html">General Setting</a></li>
+                    <li><a href="{{route('admin.setting','general')}}">General Setting</a></li>
                     <li><a href="orders.html">Mail Setting</a></li>
                     <li><a href="order-id.html">SMS Setting</a></li>
                     <li><a href="general-customers.html">Social Setting</a></li>
