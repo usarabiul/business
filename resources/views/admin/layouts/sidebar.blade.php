@@ -74,9 +74,9 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{route('admin.setting','general')}}">General Setting</a></li>
-                    <li><a href="orders.html">Mail Setting</a></li>
-                    <li><a href="order-id.html">SMS Setting</a></li>
-                    <li><a href="general-customers.html">Social Setting</a></li>
+                    <li><a href="{{route('admin.setting','mail')}}">Mail Setting</a></li>
+                    <li><a href="{{route('admin.setting','sms')}}">SMS Setting</a></li>
+                    <li><a href="{{route('admin.setting','social')}}">Social Setting</a></li>
                 </ul>
             </li>
         </ul>
