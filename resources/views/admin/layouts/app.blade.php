@@ -23,8 +23,17 @@
 
     <style type="text/css">
        .card{
-        height: unset;
+          height: unset;
        }
+       ul.statuslist li {
+            display: inline-block;
+        }
+
+        ul.statuslist li a {
+            border: 1px solid #d1cece;
+            padding: 3px 10px;
+            border-radius: 15px;
+        }
     </style>
 
      @stack('css')

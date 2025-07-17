@@ -37,8 +37,8 @@
                     <li><a href="order-id.html">Categories</a></li>
                 </ul>
             </li>
-             <li class="{{Request::is('admin/pages*')? 'mm-active' : ''}}">
-                <a href="{{route('admin.pages')}}" class="ai-icon {{Request::is('admin/pages')? 'mm-active' : ''}}" aria-expanded="false">
+             <li class="{{Request::is('admin/medies*')? 'mm-active' : ''}}">
+                <a href="{{route('admin.medies')}}" class="ai-icon {{Request::is('admin/medies')? 'mm-active' : ''}}" aria-expanded="false">
                     <i class="flaticon-381-cloud"></i>
                     <span class="nav-text">Media Assests</span>
                 </a>

@@ -189,16 +189,15 @@
                             <h4 style="color: #ff7e93;font-weight: bold;">Mail Preview</h4>
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    
-                                        <label class="form-label">Mail Type</label>
-                                        <select class="form-control" name="template" required="">
-                                            <option value="">Select Mail Type</option>
-                                            <option value="Register Mail">Register Mail</option>
-                                            <option value="Contact Mail">Contact Mail</option>
-                                        </select>
-                                        @if ($errors->has('mail_type'))
-                                        <p style="color: red; margin: 0;">{{ $errors->first('mail_type') }}</p>
-                                        @endif
+                                    <label class="form-label">Mail Type</label>
+                                    <select class="form-control" name="template" required="">
+                                        <option value="">Select Mail Type</option>
+                                        <option value="Register Mail">Register Mail</option>
+                                        <option value="Contact Mail">Contact Mail</option>
+                                    </select>
+                                    @if ($errors->has('mail_type'))
+                                    <p style="color: red; margin: 0;">{{ $errors->first('mail_type') }}</p>
+                                    @endif
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <br>
