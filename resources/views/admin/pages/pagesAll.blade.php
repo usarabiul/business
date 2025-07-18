@@ -43,18 +43,18 @@
                 <div class="row">
                     <div class="col-md-4">
                         <form action="{{route('admin.pages')}}">
-                        <div class="input-group mb-3">
-                            <input type="text" name="search" value="{{request()->search?request()->search:''}}" placeholder="Page Name" class="form-control {{$errors->has('search')?'error':''}}" />
-                            <button type="submit" class="btn btn-success btn-sm rounded-0">Search</button>
-                        </div>
+                            <div class="input-group mb-3">
+                                <input type="text" name="search" value="{{request()->search?request()->search:''}}" placeholder="Page Name" class="form-control {{$errors->has('search')?'error':''}}" />
+                                <button type="submit" class="btn btn-success btn-sm rounded-0">Search</button>
+                            </div>
                         </form>
                     </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-6">
                         <ul class="statuslist mt-1 mb-3">
-                            <li><a href="{{route('admin.pages')}}">All ({{$totals->total}})</a></li>
-                            <li><a href="{{route('admin.pages',['status'=>'active'])}}">Active ({{$totals->active}})</a></li>
-                            <li><a href="{{route('admin.pages',['status'=>'inactive'])}}">Inactive ({{$totals->inactive}})</a></li>
+                            <li><a href="{{route('admin.pages')}}">All ({{$total->total}})</a></li>
+                            <li><a href="{{route('admin.pages',['status'=>'active'])}}">Active ({{$total->active}})</a></li>
+                            <li><a href="{{route('admin.pages',['status'=>'inactive'])}}">Inactive ({{$total->inactive}})</a></li>
                         </ul>
                     </div>
                 </div>
@@ -62,9 +62,9 @@
                     <table class="table table-responsive-md">
                         <thead>
                             <tr>
-                                <th style="min-width: 60px;">SL</th>
+                                <th style="min-width: 60px;width: 60px;text-align: center;">SL</th>
                                 <th style="min-width: 300px;">Name</th>
-                                <th style="min-width: 100px; width: 100px;">Image</th>
+                                <th style="min-width: 70px; width: 70px;text-align: center;">Image</th>
                                 <th style="min-width: 100px; width: 100px;">Status</th>
                                 <th style="min-width: 60px; width: 60px;">Action</th>
                             </tr>
@@ -72,7 +72,7 @@
                         <tbody>
                             @foreach($pages as $i=>$page)
                             <tr>
-                                <td>{{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}</td>
+                                <td class="text-center" ><strong class="text-black">{{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}</strong></td>
                                 <td>
                                     <span>
                                         <a href="{{route('pageView',$page->slug?:'no-slug')}}" target="_blank">{{$page->name}}
@@ -82,8 +82,8 @@
                                         @endif
                                         </span>
                                         <br />
-                                    @if($page->fetured==true)
-                                    <span><i class="fa fa-star" style="color: #1ab394;"></i></span>
+                                    @if($page->featured==true)
+                                    <span><i class="fa fa-star" style="color: #faca51;"></i></span>
                                     @endif
 
                                     <span style="color: #ccc;"><i class="fa fa-calendar" style="color: #1ab394;"></i> {{$page->created_at->format('d-m-Y')}}</span>
@@ -105,42 +105,23 @@
                                     @endif
                                 </td>
                                 <td style="text-align:center;">
-                                    <a href="{{route('admin.pagesAction',['edit',$page->id])}}" class="btn btn-md btn-info">
-                                        Edit
-                                    </a>   
-                                    <!-- 
-                                    //// Permission Page Delete
-                                    --> 
-                                    @isset(json_decode(Auth::user()->permission->permission, true)['pages']['delete'])
-                                        <a href="{{route('admin.pagesAction',['delete',$page->id])}}" onclick="return confirm('Are You Want To Delete')" class="btn btn-md btn-danger">
-                                        <i class="fa fa-trash"></i>
-                                        </a> 
-                                    @endisset
-                                        <!-- 
-                                    //// Permission Page Delete
-                                    --> 
-
-                                </td>
-                            </tr>
-                            @endforeach
-                              <tr>
-                                <td><strong class="text-black">01 </strong></td>
-                                <td>Mr. Bobby </td>
-
-                                <td></td>
-                                <td><span class="badge light badge-success">Active </span></td>
-                                <td style="text-align:center;">
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
-                                            <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                                            <i class="fas fa-ellipsis-h"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void(0);">Edit </a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete </a>
+                                            <a class="dropdown-item" href="{{route('admin.pagesAction',['edit',$page->id])}}"><i class="fa fa-edit"></i> Edit </a>
+                                            <a class="dropdown-item" href="{{route('admin.pagesAction',['delete',$page->id])}}" onclick="return confirm('Are You Want To Delete')" ><i class="fa fa-trash"></i> Delete </a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                            @endforeach
+                            @if($pages->count()==0)
+                                <tr>
+                                    <td colspan="5" class="text-center">No Result Found</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
 

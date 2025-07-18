@@ -24107,7 +24107,7 @@ svg text {
 
 .form-control.is-invalid {
   border-color: #F94687 !important;
-  border-right: 0px !important; }
+  }
   .form-control.is-invalid:focus {
     box-shadow: none; }
 

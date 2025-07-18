@@ -44,29 +44,38 @@
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <div class="mb-3">
+                                <div class="mb-1">
                                     <label class="form-label">Name 
                                         @if($page->template)
                                     	<span style="color: #ccc;">({{$page->template}})</span>
                                     	@endif
                                     </label>
-                                    <input type="text" class="form-control {{$errors->has('name')?'error':''}}" name="name" placeholder="Enter Name" value="{{$page->name?:old('name')}}" required="" />
+                                    <input type="text" class="form-control {{$errors->has('name')?'is-invalid':''}}" name="name" placeholder="Enter Name" value="{{old('name')?:$page->name}}" required="" />
                                     @if ($errors->has('name'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('name') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                                     @endif
+                                </div>
+                                <div class="mb-3 input-group">
+                                    <label class="slugEdit" for="slug" style="color: #3F51B5;cursor: pointer;width: 130px;padding: 3px;"><span>{{$page->auto_slug?'Custom Slug':'Auto Slug'}} </span> <i class="fa fa-edit"></i></label>
+                                    <input type="text" class="slugEditData form-control {{$errors->has('slug')?'error':''}}"
+                                        @if($page->auto_slug) 
+                                            name="slug"
+                                            style="display:block;"
+                                        @endif
+                                    placeholder="Page Slug" value="{{$page->slug?:old('slug')}}" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Short Description </label>
-                                    <textarea name="short_description" class="form-control {{$errors->has('short_description')?'error':''}}" placeholder="Enter Short Description">{!!$page->short_description!!}</textarea>
+                                    <textarea name="short_description" class="form-control {{$errors->has('short_description')?'is-invalid':''}}" placeholder="Enter Short Description">{!!old('short_description')?:$page->short_description!!}</textarea>
                                     @if ($errors->has('short_description'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('short_description') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('short_description') }}</div>
                                     @endif
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Description </label>
-                                    <textarea name="description" class="{{$errors->has('description')?'error':''}} tinyEditor" placeholder="Enter Description">{!!$page->description!!}</textarea>
+                                    <textarea name="description" class="{{$errors->has('description')?'is-invalid':''}} tinyEditor" placeholder="Enter Description">{!!old('description')?:$page->description!!}</textarea>
                                     @if ($errors->has('description'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('description') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('description') }}</div>
                                     @endif
                                 </div>
                             </div>
@@ -81,23 +90,23 @@
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label">SEO Meta Title</label>
-                                    <input type="text" class="form-control {{$errors->has('seo_title')?'error':''}}" name="seo_title" placeholder="Enter SEO Meta Title" value="{{$page->seo_title?:old('seo_title')}}" />
+                                    <input type="text" class="form-control {{$errors->has('seo_title')?'is-invalid':''}}" name="seo_title" placeholder="Enter SEO Meta Title" value="{{old('seo_title')?:$page->seo_title}}" />
                                     @if ($errors->has('seo_title'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('seo_title') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('seo_title') }}</div>
                                     @endif
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">SEO Meta Description </label>
-                                    <textarea name="seo_description" class="form-control {{$errors->has('seo_description')?'error':''}}" placeholder="Enter SEO Meta Description">{!!$page->seo_description!!}</textarea>
+                                    <textarea name="seo_description" class="form-control {{$errors->has('seo_description')?'is-invalid':''}}" placeholder="Enter SEO Meta Description">{!!old('seo_description')?:$page->seo_description!!}</textarea>
                                     @if ($errors->has('seo_description'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('seo_description') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('seo_description') }}</div>
                                     @endif
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">SEO Meta Keyword </label>
-                                    <textarea name="seo_keyword" class="form-control {{$errors->has('seo_keyword')?'error':''}}" placeholder="Enter SEO Meta Keyword">{!!$page->seo_keyword!!}</textarea>
+                                    <textarea name="seo_keyword" class="form-control {{$errors->has('seo_keyword')?'is-invalid':''}}" placeholder="Enter SEO Meta Keyword">{!!old('seo_keyword')?:$page->seo_keyword!!}</textarea>
                                     @if ($errors->has('seo_keyword'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('seo_keyword') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('seo_keyword') }}</div>
                                     @endif
                                 </div>
                             </div>
@@ -114,11 +123,12 @@
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label">Image</label>
-                                    <input type="file" name="image" class="form-control {{$errors->has('image')?'error':''}}" />
+                                    <input type="file" name="image" accept="image/*" class="form-control {{ $errors->has('image') ? 'is-invalid' : '' }}" />
                                     @if ($errors->has('image'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('image') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('image') }}</div>
                                     @endif
                                 </div>
+                                
                                 <div class="mb-3">
                                     <img src="{{asset($page->image())}}" style="max-width: 100px;" />
                                     @isset(json_decode(Auth::user()->permission->permission, true)['pages']['add'])
@@ -129,9 +139,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Banner</label>
-                                    <input type="file" name="banner" class="form-control {{$errors->has('banner')?'error':''}}" />
+                                    <input type="file" name="banner"  accept="image/*" class="form-control {{$errors->has('banner')?'is-invalid':''}}" />
                                     @if ($errors->has('banner'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('banner') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('banner') }}</div>
                                     @endif
                                 </div>
                                 <div class="mb-3">
@@ -153,7 +163,7 @@
                         <div class="card-content">
                             <div class="card-body">
                                 @if ($errors->has('galleries*'))
-                                <p style="color: red; margin: 0; font-size: 10px;">The Galleries Must Be a Number</p>
+                                <div class="invalid-feedback">The Galleries Must Be a Number</p>
                                 @endif
                                 <select  name="galleries[]" class="selectpicker form-control" title="Select Gallery" multiple="">
       \
@@ -186,7 +196,7 @@
                                         <option value="All Clients" {{$page->template=='All Clients'?'selected':''}}>All Clients</option>
                                     </select>
                                     @if ($errors->has('template'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('template') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('template') }}</div>
                                     @endif
                                 </div>
                                 <div class="row">
@@ -211,7 +221,7 @@
                                     <label>Published Date</label>
                                     <input type="date" class="form-control form-control-sm" name="created_at" value="{{$page->created_at->format('Y-m-d')}}">
                                     @if ($errors->has('created_at'))
-                                    <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('created_at') }}</p>
+                                    <div class="invalid-feedback">{{ $errors->first('created_at') }}</div>
                                     @endif
                                 </div>
 

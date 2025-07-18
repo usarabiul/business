@@ -21,22 +21,43 @@
 	  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
     <style type="text/css">
+      .form-control {
+          color: #252525;
+      }
+
+      .form-control:hover, .form-control:focus, .form-control.active{
+          color: #656363;
+      }
+      .invalid-feedback{
+        display:block;
+      }
        .card{
           height: unset;
        }
-       ul.statuslist li {
+
+        ul.statuslist {
+            text-align: right;
+        }
+
+        ul.statuslist li {
             display: inline-block;
         }
 
         ul.statuslist li a {
             border: 1px solid #d1cece;
-            padding: 3px 10px;
+            padding: 3px 6px;
             border-radius: 15px;
+            display: inline-block;
+            margin: 3px 1px;
+            font-size: 12px;
         }
-        ul.statuslist
-        {
-            text-align: right;
+
+         .slugEditData{
+            display:none;
+            height: 30px;
+            padding: 4px 10px;
         }
+        
     </style>
 
      @stack('css')
@@ -61,7 +82,6 @@
           @include(adminTheme().'layouts.sidebar')
 
           <div class="content-body">
-              <!-- row -->
 			        <div class="container-fluid">
                 @yield('contents')
               </div>
@@ -84,14 +104,24 @@
 
      <script src="{{asset('tinymce/tinymce.min.js')}}"></script>
     
-     <script type="text/javascript">
-      $( function() {
-              $( ".sortable" ).sortable();
-              $( ".sortable" ).disableSelection();
-          } );
-    </script>
      <script>
       $(document).ready(function(){
+
+        $( ".sortable" ).sortable();
+        $( ".sortable" ).disableSelection();
+
+        $('.slugEdit').click(function(){
+            $('.slugEditData').toggle();
+             var span = $(this).find('span');
+            var isCustom = span.text().trim() === 'Auto Slug';
+            span.text(isCustom ? 'Custom Slug' : 'Auto Slug');
+            var input = $('.slugEditData');
+            if (isCustom) {
+                input.attr('name', 'slug');
+            } else {
+                input.removeAttr('name');
+            }
+        });
 
         tinymce.init({
             selector: 'textarea.tinyEditor',

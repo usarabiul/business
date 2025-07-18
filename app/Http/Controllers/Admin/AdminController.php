@@ -534,7 +534,7 @@ class AdminController extends Controller
       }
 
     })
-    ->select(['id','name','slug','view','type','template','created_at','addedby_id','status','fetured'])
+    ->select(['id','name','slug','view','type','template','created_at','addedby_id','status','featured'])
     ->paginate(25)->appends([
       'search'=>$r->search,
       'status'=>$r->status,
@@ -542,15 +542,15 @@ class AdminController extends Controller
       'endDate'=>$r->endDate,
     ]);
 
-    //Total Count Results
-    $totals = DB::table('posts')->where('status','<>','temp')
+    //Total Count Result
+    $total = DB::table('posts')->where('status','<>','temp')
     ->where('type',0)
     ->selectRaw('count(*) as total')
     ->selectRaw("count(case when status = 'active' then 1 end) as active")
     ->selectRaw("count(case when status = 'inactive' then 1 end) as inactive")
     ->first();
 
-    return view(adminTheme().'pages.pagesAll',compact('pages','totals'));
+    return view(adminTheme().'pages.pagesAll',compact('pages','total'));
 
   }
 
@@ -585,14 +585,16 @@ class AdminController extends Controller
       if($action=='update' && $r->isMethod('post')){
 
         $check = $r->validate([
-            'name' => 'required|max:191',
+            'name' => 'required|max:200',
+            'slug' => 'nullable|max:240',
             'template' => 'nullable|max:100',
             'seo_title' => 'nullable|max:120',
             'seo_description' => 'nullable|max:200',
-            'seo_keyword' => 'nullable|max:300',
+            'seo_keyword' => 'nullable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+
 
         $page->name=$r->name;
         $page->short_description=$r->short_description;
@@ -622,8 +624,8 @@ class AdminController extends Controller
           uploadFile($file,$src,$srcType,$fileUse,$author);
         }
         ///////Image Upload End////////////
-
-        $slug =Str::slug($r->name);
+        $page->auto_slug=$r->slug?true:false;
+        $slug =Str::slug($r->slug?:$r->name);
         if($slug==null){
           $page->slug=$page->id;
         }else{
@@ -638,7 +640,7 @@ class AdminController extends Controller
           $page->created_at =$r->created_at;
         }
         $page->status =$r->status?'active':'inactive';
-        $page->fetured =$r->fetured?1:0;
+        $page->featured =$r->featured?1:0;
         $page->editedby_id =Auth::id();
         $page->save();
         
