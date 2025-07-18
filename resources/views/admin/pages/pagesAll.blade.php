@@ -3,7 +3,13 @@
 <title>{{websiteTitle('Pages List')}}</title>
 @endsection 
 @push('css')
-<style type="text/css"></style>
+<style type="text/css">
+    .table:not(.table-bordered) thead th
+    {
+        border-top: none;
+        background: #f5f5f5;
+    }
+</style>
 @endpush 
 @section('contents')
 <div class="row">
@@ -34,72 +40,39 @@
     </div>
     <div class="card-content">
         <div class="card-body">
-            <form action="{{route('admin.pages')}}">
                 <div class="row">
-                    <div class="col-md-6 mb-1">
-                        <div class="input-group">
-                            <input type="date" name="startDate" value="{{request()->startDate?Carbon\Carbon::parse(request()->startDate)->format('Y-m-d') :''}}" class="form-control {{$errors->has('startDate')?'error':''}}" />
-                            <input type="date" value="{{request()->endDate?Carbon\Carbon::parse(request()->endDate)->format('Y-m-d') :''}}" name="endDate" class="form-control {{$errors->has('endDate')?'error':''}}" />
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-1">
-                        <div class="input-group">
+                    <div class="col-md-4">
+                        <form action="{{route('admin.pages')}}">
+                        <div class="input-group mb-3">
                             <input type="text" name="search" value="{{request()->search?request()->search:''}}" placeholder="Page Name" class="form-control {{$errors->has('search')?'error':''}}" />
                             <button type="submit" class="btn btn-success btn-sm rounded-0">Search</button>
                         </div>
+                        </form>
                     </div>
-                </div>
-            </form>
-            <hr>
-            <form action="{{route('admin.pages')}}">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="input-group mb-1">
-                            <select class="form-control form-control-sm rounded-0" name="action" required="">
-                                <option value="">Select Action</option>
-                                <option value="1">Active</option>
-                                <option value="2">InActive</option>
-                                <option value="3">Feature</option>
-                                <option value="4">Un-feature</option>
-                                <option value="5">Delete</option>
-                            </select>
-                            <button class="btn btn-sm btn-primary rounded-0" onclick="return confirm('Are You Want To Action?')">Action</button>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="statuslist">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-6">
+                        <ul class="statuslist mt-1 mb-3">
                             <li><a href="{{route('admin.pages')}}">All ({{$totals->total}})</a></li>
                             <li><a href="{{route('admin.pages',['status'=>'active'])}}">Active ({{$totals->active}})</a></li>
                             <li><a href="{{route('admin.pages',['status'=>'inactive'])}}">Inactive ({{$totals->inactive}})</a></li>
                         </ul>
                     </div>
                 </div>
-
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                <div class="table-responsive" style="min-height:300px;">
+                    <table class="table table-responsive-md">
                         <thead>
                             <tr>
-                                <th style="min-width: 60px;">
-                                    <label style="cursor: pointer; margin-bottom: 0;"> <input class="checkbox" type="checkbox" class="form-control" id="checkall" /> All <span class="checkCounter"></span> </label>
-                                </th>
+                                <th style="min-width: 60px;">SL</th>
                                 <th style="min-width: 300px;">Name</th>
                                 <th style="min-width: 100px; width: 100px;">Image</th>
                                 <th style="min-width: 100px; width: 100px;">Status</th>
-                                <th style="min-width: 160px; width: 160px;">Action</th>
+                                <th style="min-width: 60px; width: 60px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($pages as $i=>$page)
                             <tr>
-                                <td>
-                                    <input class="checkbox" type="checkbox" name="checkid[]" value="{{$page->id}}" /><br />
-
-                                    {{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}
-                                    
-                                </td>
+                                <td>{{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}</td>
                                 <td>
                                     <span>
                                         <a href="{{route('pageView',$page->slug?:'no-slug')}}" target="_blank">{{$page->name}}
@@ -131,7 +104,7 @@
                                     <span class="badge badge-danger">Draft </span>
                                     @endif
                                 </td>
-                                <td>
+                                <td style="text-align:center;">
                                     <a href="{{route('admin.pagesAction',['edit',$page->id])}}" class="btn btn-md btn-info">
                                         Edit
                                     </a>   
@@ -150,12 +123,29 @@
                                 </td>
                             </tr>
                             @endforeach
+                              <tr>
+                                <td><strong class="text-black">01 </strong></td>
+                                <td>Mr. Bobby </td>
+
+                                <td></td>
+                                <td><span class="badge light badge-success">Active </span></td>
+                                <td style="text-align:center;">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="javascript:void(0);">Edit </a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Delete </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
 
                     {{$pages->links('pagination')}}
                 </div>
-            </form>
         </div>
     </div>
 </div>

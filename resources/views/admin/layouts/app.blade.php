@@ -15,7 +15,6 @@
     <link rel="apple-touch-icon" href="{{asset(general()->favicon())}}" />
     <link rel="shortcut icon" type="image/x-icon" href="{{asset(general()->favicon())}}" />
      <!-- BEGIN: Theme JS-->
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/assets/vendor/chartist/css/chartist.min.css')}}">
     <link href="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
 	  <link href="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-datepicker-master/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
     <link href="{{asset(assetLinkAdmin().'/assets/css/style.css')}}" rel="stylesheet">
@@ -33,6 +32,10 @@
             border: 1px solid #d1cece;
             padding: 3px 10px;
             border-radius: 15px;
+        }
+        ul.statuslist
+        {
+            text-align: right;
         }
     </style>
 
@@ -66,23 +69,20 @@
 
           @include(adminTheme().'layouts.footer')
         </div>
-    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Required vendors -->
     <script src="{{asset(assetLinkAdmin().'/assets/vendor/global/global.min.js')}}"></script>
 	  <script src="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
     <script src="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-datepicker-master/js/bootstrap-datepicker.min.js')}}"></script>
-	  <script src="{{asset(assetLinkAdmin().'/assets/vendor/chart.js/Chart.bundle.min.js')}}"></script>
+     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script> -->
     <script src="{{asset(assetLinkAdmin().'/assets/js/custom.min.js')}}"></script>
 	  <script src="{{asset(assetLinkAdmin().'/assets/js/deznav-init.js')}}"></script>
-	
-	  <!-- Chart piety plugin files -->
-    <script src="{{asset(assetLinkAdmin().'/assets/vendor/peity/jquery.peity.min.js')}}"></script>
-	
-	  <!-- Apex Chart -->
-	  <script src="{{asset(assetLinkAdmin().'/assets/vendor/apexchart/apexchart.js')}}"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
 	
 	  <!-- Dashboard 1 -->
 	  <script src="{{asset(assetLinkAdmin().'/assets/js/dashboard/dashboard-1.js')}}"></script>
+
+     <script src="{{asset('tinymce/tinymce.min.js')}}"></script>
     
      <script type="text/javascript">
       $( function() {
@@ -92,6 +92,41 @@
     </script>
      <script>
       $(document).ready(function(){
+
+        tinymce.init({
+            selector: 'textarea.tinyEditor',
+            height: 300,
+            menubar: false,
+            statusbar: false,
+            plugins: 'lists advlist image link fullscreen advcode code',
+            toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify |' + 
+            'bullist numlist outdent advlist | link image | preview media fullscreen  | code |' +
+            'forecolor backcolor emoticons | fontsize',
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.onchange = function () {
+                  var file = this.files[0];
+                  var reader = new FileReader();
+                  reader.onload = function () {
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                    var base64 = reader.result.split(',')[1];
+                    var blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), { title: file.name });
+                  };
+                  reader.readAsDataURL(file);
+                };
+                input.click();
+              },
+            content_style: 'body{font-family:Helvetica,Arial,sans-serif; font-size:16px}',
+            font_size_formats: '8px 10px 12px 14px 16px 18px 24px 36px 48px',
+        });
           
 
         $('#PrintAction').on("click", function () {
