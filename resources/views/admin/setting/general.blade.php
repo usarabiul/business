@@ -8,8 +8,8 @@
 
 <div class="page-titles">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard </a></li>
-        <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ucfirst($type)}} Setting </a></li>
+        <li class="breadcrumb-item active"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
+        <li class="breadcrumb-item">{{ucfirst($type)}} Setting </li>
     </ol>
 </div>
 
@@ -28,53 +28,53 @@
                         <div class="row">
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Website Title </label>
-                                <input type="text" name="title" value="{{ $general->title }}" placeholder="Website Title" class="form-control {{$errors->has('title')?'error':''}}" />
+                                <input type="text" name="title" value="{{ old('title')?:$general->title }}" placeholder="Website Title" class="form-control {{$errors->has('title')?'is-invalid':''}}" />
                                 @if ($errors->has('title'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('title') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('title') }}</div>
                                 @endif
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Website Subtitle</label>
-                                <input type="text" name="subtitle" value="{{ $general->subtitle }}" placeholder="Website subtitle" class="form-control {{$errors->has('subtitle')?'error':''}}" />
+                                <input type="text" name="subtitle" value="{{ old('subtitle')?:$general->subtitle }}" placeholder="Website subtitle" class="form-control {{$errors->has('subtitle')?'is-invalid':''}}" />
                                 @if ($errors->has('subtitle'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('subtitle') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('subtitle') }}</div>
                                 @endif
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Mobile Number</label>
-                                <input type="text" name="mobile" value="{{ $general->mobile }}" placeholder="Website mobile" class="form-control {{$errors->has('mobile')?'error':''}}" />
+                                <input type="text" name="mobile" value="{{ old('mobile')?:$general->mobile }}" placeholder="Website mobile" class="form-control {{$errors->has('mobile')?'is-invalid':''}}" />
                                 @if ($errors->has('mobile'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('mobile') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('mobile') }}</div>
                                 @endif
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Email Address</label>
-                                <input type="text" name="email" value="{{ $general->email }}" placeholder="Website email" class="form-control {{$errors->has('email')?'error':''}}" />
+                                <input type="text" name="email" value="{{ old('email')?:$general->email }}" placeholder="Website email" class="form-control {{$errors->has('email')?'is-invalid':''}}" />
                                 @if ($errors->has('email'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('email') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('email') }}</div>
                                 @endif
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Address line 1</label>
-                                <textarea name="address_one" placeholder="Address Line 1" class="form-control  {{$errors->has('address_one')?'error':''}}">{{ $general->address_one}}</textarea>
+                                <textarea name="address_one" placeholder="Address Line 1" class="form-control  {{$errors->has('address_one')?'is-invalid':''}}">{{ old('address_one')?:$general->address_one}}</textarea>
                                 @if ($errors->has('address_one'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('address_one') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('address_one') }}</div>
                                 @endif
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Address line 2</label>
-                                <textarea name="address_two" placeholder="Address Line 1" class="form-control {{$errors->has('address_two')?'error':''}}">{{ $general->address_two}}</textarea>
+                                <textarea name="address_two" placeholder="Address Line 1" class="form-control {{$errors->has('address_two')?'is-invalid':''}}">{{ old('address_two')?:$general->address_two}}</textarea>
                                 @if ($errors->has('address_two'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('address_two') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('address_two') }}</div>
                                 @endif
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Favicon</label>
-                                <input type="file" name="favicon" class="form-control {{$errors->has('favicon')?'error':''}}" />
+                                <input type="file" name="favicon" accept="image/*" class="form-control {{$errors->has('favicon')?'is-invalid':''}}" />
                                 @if ($errors->has('favicon'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('favicon') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('favicon') }}</div>
                                 @endif
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
@@ -85,9 +85,9 @@
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Logo</label>
-                                <input type="file" name="logo" class="form-control {{$errors->has('logo')?'error':''}}" />
+                                <input type="file" name="logo" accept="image/*" class="form-control {{$errors->has('logo')?'is-invalid':''}}" />
                                 @if ($errors->has('logo'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('logo') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('logo') }}</div>
                                 @endif
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
@@ -99,16 +99,16 @@
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Website Url</label>
-                                <input type="text" name="website" value="{{ $general->website }}" placeholder="Website website" class="form-control {{$errors->has('website')?'error':''}}" />
+                                <input type="text" name="website" value="{{ old('website')?:$general->website }}" placeholder="Website website" class="form-control {{$errors->has('website')?'is-invalid':''}}" />
                                 @if ($errors->has('website'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('website') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('website') }}</div>
                                 @endif
                             </div>
                             <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
                                 <label class="form-label">Footer Text</label>
-                                <input type="text" name="footer_text" value="{{ $general->copyright_text }}" placeholder="Website Footer Text" class="form-control {{$errors->has('footer_text')?'error':''}}" />
+                                <input type="text" name="footer_text" value="{{ old('footer_text')?:$general->copyright_text }}" placeholder="Website Footer Text" class="form-control {{$errors->has('footer_text')?'is-invalid':''}}" />
                                 @if ($errors->has('footer_text'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('footer_text') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('footer_text') }}</div>
                                 @endif
                             </div>
                         </div>
@@ -126,65 +126,49 @@
                         <div class="row">
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Meta Author</label>
-                                <input type="text" name="meta_author" value="{{ $general->meta_author }}" placeholder="Meta Author" class="form-control {{$errors->has('meta_author')?'error':''}}" />
+                                <input type="text" name="meta_author" value="{{ old('meta_author')?:$general->meta_author }}" placeholder="Meta Author" class="form-control {{$errors->has('meta_author')?'is-invalid':''}}" />
                                 @if ($errors->has('meta_author'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('meta_author') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('meta_author') }}</div>
                                 @endif
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Meta title <small>(Max: 60 L)</small></label>
-                                <input type="text" name="meta_title" value="{{ $general->meta_title }}" placeholder="Meta title" class="form-control {{$errors->has('meta_title')?'error':''}}" />
+                                <input type="text" name="meta_title" value="{{ old('meta_title')?:$general->meta_title }}" placeholder="Meta title" class="form-control {{$errors->has('meta_title')?'is-invalid':''}}" />
                                 @if ($errors->has('meta_title'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('meta_title') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('meta_title') }}</div>
                                 @endif
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Meta keyword </label>
-                                <textarea name="meta_keyword" placeholder="Meta keyword" class="form-control  {{$errors->has('meta_keyword')?'error':''}}">{{ $general->meta_keyword}}</textarea>
+                                <textarea name="meta_keyword" placeholder="Meta keyword" class="form-control  {{$errors->has('meta_keyword')?'is-invalid':''}}">{{ old('meta_keyword')?:$general->meta_keyword}}</textarea>
                                 @if ($errors->has('meta_keyword'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('meta_keyword') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('meta_keyword') }}</div>
                                 @endif
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Meta Description <small>(Max: 160 L)</small></label>
-                                <textarea name="meta_description" placeholder="Meta Description" class="form-control  {{$errors->has('meta_description')?'error':''}}">{{ $general->meta_description}}</textarea>
+                                <textarea name="meta_description" placeholder="Meta Description" class="form-control  {{$errors->has('meta_description')?'is-invalid':''}}">{{ old('meta_description')?:$general->meta_description}}</textarea>
                                 @if ($errors->has('meta_description'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('meta_description') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('meta_description') }}</div>
                                 @endif
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Script tag Head</label>
-                                <textarea name="script_head" placeholder="Script tag Head" class="form-control  {{$errors->has('script_head')?'error':''}}">{{ $general->script_head}}</textarea>
+                                <textarea name="script_head" placeholder="Script tag Head" class="form-control  {{$errors->has('script_head')?'is-invalid':''}}">{{ old('script_head')?:$general->script_head}}</textarea>
                                 @if ($errors->has('script_head'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('script_head') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('script_head') }}</div>
                                 @endif
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                 <label class="form-label">Script tag Body</label>
-                                <textarea name="script_body" placeholder="Script tag Body" class="form-control  {{$errors->has('script_body')?'error':''}}">{{ $general->script_body}}</textarea>
+                                <textarea name="script_body" placeholder="Script tag Body" class="form-control  {{$errors->has('script_body')?'is-invalid':''}}">{{ old('script_body')?:$general->script_body}}</textarea>
                                 @if ($errors->has('script_body'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('script_body') }}</p>
-                                @endif
-                            </div>
-
-                            <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
-                                <label class="form-label">Style CSS</label>
-                                <textarea name="custom_css" placeholder="Custom Css write here..." class="form-control  {{$errors->has('custom_css')?'error':''}}">{{ $general->custom_css}}</textarea>
-                                @if ($errors->has('custom_css'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('custom_css') }}</p>
-                                @endif
-                            </div>
-
-                            <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
-                                <label class="form-label">Script js</label>
-                                <textarea name="custom_js" placeholder="Custom Script js write here..." class="form-control  {{$errors->has('custom_js')?'error':''}}">{{ $general->custom_js}}</textarea>
-                                @if ($errors->has('custom_js'))
-                                <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('custom_js') }}</p>
+                                <div class="invalid-feedback">{{ $errors->first('script_body') }}</div>
                                 @endif
                             </div>
                         </div>

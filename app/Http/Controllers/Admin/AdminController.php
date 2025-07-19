@@ -2773,27 +2773,6 @@ public function userRoles(Request $r){
       return view(adminTheme().'setting.general',compact('general','type'));
     }else if($type=='mail'){
       return view(adminTheme().'setting.mail',compact('general','type'));
-    }else if($type=='preview-mail'){
-        
-        if($r->template=='Contact Mail'){
-            $data =array(
-                        'title'=>'Test mail for testing',
-                        'name'=>'Demo Name',
-                        'phone'=>'+8801745454545',
-                        'email'=>'demoemail@gmail.com',
-                        'subject'=>'Testing Contact Mail for Admin',
-                        'comment'=>'We are testing for email testing form admin access . i hope all are successfully working.',
-                    );
-            $datas =array('r'=>$data);
-            return view('mails.ContactMail',compact('general','type','datas'));
-        }elseif($r->template=='Register Mail'){
-            
-            $user =Auth::user();
-            $datas =array('user'=>$user);
-            return view('mails.registrationMail',compact('general','type','datas'));
-        }
-      return view('mails.deafultMail',compact('general','type'));
-      
     }else if($type=='sms'){
       return view(adminTheme().'setting.sms',compact('general','type'));
     }else if($type=='social'){
@@ -2886,8 +2865,6 @@ public function userRoles(Request $r){
         $general->meta_description=$r->meta_description;
         $general->script_head=$r->script_head;
         $general->script_body=$r->script_body;
-        $general->custom_css=$r->custom_css;
-        $general->custom_js=$r->custom_js;
         $general->copyright_text=$r->footer_text;
         
 
@@ -2903,7 +2880,7 @@ public function userRoles(Request $r){
 
           $name = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
           $fullName = basename($file->getClientOriginalName());
-          $ext =$file->getClientOriginalExtension();
+          $ext =strtolower($file->getClientOriginalExtension());
           $size =$file->getSize();
 
           $year =carbon::now()->format('Y');
@@ -2931,7 +2908,7 @@ public function userRoles(Request $r){
 
             $name = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
             $fullName = basename($file->getClientOriginalName());
-            $ext =$file->getClientOriginalExtension();
+            $ext =strtolower($file->getClientOriginalExtension());
             $size =$file->getSize();
 
             $year =carbon::now()->format('Y');
@@ -2957,7 +2934,7 @@ public function userRoles(Request $r){
 
             $name = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
             $fullName = basename($file->getClientOriginalName());
-            $ext =$file->getClientOriginalExtension();
+            $ext =strtolower($file->getClientOriginalExtension());
             $size =$file->getSize();
 
             $year =carbon::now()->format('Y');
@@ -2972,7 +2949,6 @@ public function userRoles(Request $r){
             $general->banner =$fullPath;
 
         }
-        $general->commingsoon_mode=$r->commingsoon_mode?true:false;
         $general->save();
 
         Session()->flash('success','General Updated Are Successfully Done!');
@@ -3002,12 +2978,7 @@ public function userRoles(Request $r){
       $general->mail_encryption=$r->mail_encryption;
       $general->mail_username=$r->mail_username;
       $general->mail_password=$r->mail_password;
-      $general->admin_mails=$r->admin_mails;
       $general->mail_status=$r->mail_status?true:false;
-      $general->register_mail_user=$r->register_mail_user?true:false;
-      $general->register_mail_author=$r->register_mail_author?true:false;
-      $general->forget_password_mail_user=$r->forget_password_mail_user?true:false;
-      $general->register_verify_mail_user=$r->register_verify_mail_user?true:false;
       $general->save();
 
       Session()->flash('success','Mail Updated Are Successfully Done!');
@@ -3017,32 +2988,22 @@ public function userRoles(Request $r){
     if($type=='send-testing-mail'){
 
         $check = $r->validate([
-            'mail_type' => 'required|max:200',
             'mail_address' => 'required|max:200',
         ]);
         
         if(general()->mail_status && $r->mail_address){
             //Mail Data
             
-            if($r->mail_type=='Contact Mail'){
-                $data =array(
-                        'title'=>'Test mail for testing',
-                        'name'=>'Demo Name',
-                        'phone'=>'+8801745454545',
-                        'email'=>'demoemail@gmail.com',
-                        'subject'=>'Testing Contact Mail for Admin',
-                        'comment'=>'We are testing for email testing form admin access . i hope all are successfully working.',
-                    );
-                $datas =array('r'=>$data);
-                $template ='mails.ContactMail';
-            }elseif($r->mail_type=='Register Mail'){
-                $user =Auth::user();
-                $datas =array('user'=>$user);
-                $template ='mails.registrationMail';
-            }else{
-                $template ='mails.deafultMail';
-            }
-            
+            $data =array(
+                    'title'=>'Test mail for testing',
+                    'name'=>'Demo Name',
+                    'phone'=>'+8801745454545',
+                    'email'=>'demoemail@gmail.com',
+                    'subject'=>'Testing Contact Mail for Admin',
+                    'comment'=>'We are testing for email testing form admin access . i hope all are successfully working.',
+                );
+            $datas =array('r'=>$data);
+            $template ='mails.ContactMail';
             $toEmail =$r->mail_address?:general()->mail_address;
             $toName =general()->mail_from_name;
             $subject =$r->mail_type.' Mail Testing Form '.general()->title;
@@ -3076,13 +3037,12 @@ public function userRoles(Request $r){
     if($type=='sms'){
         
         $check = $r->validate([
-            'sms_type' => 'nullable|max:50',
+            'sms_type' => 'nullable|max:100',
             'sms_senderid' => 'nullable|max:50',
             'sms_url_nonmasking' => 'nullable|max:200',
-            'sms_url_masking' => 'nullable|max:200',
+            'sms_url_masking' => 'nullable|max:100',
             'sms_username' => 'nullable|max:50',
             'sms_password' => 'nullable|max:50',
-            'admin_numbers' => 'nullable|max:1000',
         ]);
         
       $general->sms_type=$r->sms_type;
@@ -3091,12 +3051,7 @@ public function userRoles(Request $r){
       $general->sms_url_masking=$r->sms_url_masking;
       $general->sms_username=$r->sms_username;
       $general->sms_password=$r->sms_password;
-      $general->admin_numbers=$r->admin_numbers;
       $general->sms_status=$r->sms_status?true:false;
-      $general->register_sms_user=$r->register_sms_user?true:false;
-      $general->register_sms_author=$r->register_sms_author?true:false;
-      $general->forget_password_sms_user=$r->forget_password_sms_user?true:false;
-      $general->register_verify_sms_user=$r->register_verify_sms_user?true:false;
       $general->save();
 
       Session()->flash('success','SMS Updated Are Successfully Done!');
@@ -3113,6 +3068,8 @@ public function userRoles(Request $r){
             'linkedin_link' => 'nullable|max:200',
             'pinterest_link' => 'nullable|max:200',
             'youtube_link' => 'nullable|max:200',
+            'whatsapp_link' => 'nullable|max:100',
+            'messanger_link' => 'nullable|max:100',
             'fb_app_id' => 'nullable|max:100',
             'fb_app_secret' => 'nullable|max:100',
             'fb_app_redirect_url' => 'nullable|max:200',
@@ -3130,6 +3087,8 @@ public function userRoles(Request $r){
         $general->linkedin_link=$r->linkedin_link;
         $general->pinterest_link=$r->pinterest_link;
         $general->youtube_link=$r->youtube_link;
+        $general->whatsapp_link=$r->whatsapp_link;
+        $general->messanger_link=$r->messanger_link;
         $general->fb_app_id=$r->fb_app_id;
         $general->fb_app_secret=$r->fb_app_secret;
         $general->fb_app_redirect_url=$r->fb_app_redirect_url;

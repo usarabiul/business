@@ -16,8 +16,8 @@
     <div class="col-md-6">
         <div class="page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard </a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Pages List</a></li>
+                <li class="breadcrumb-item active"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
+                <li class="breadcrumb-item">Pages List</li>
             </ol>
         </div>
     </div>

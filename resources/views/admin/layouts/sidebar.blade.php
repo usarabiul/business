@@ -62,9 +62,9 @@
                     <span class="nav-text">Users Manage</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="index.html">Admin Users</a></li>
-                    <li><a href="orders.html">All Users</a></li>
-                    <li><a href="order-id.html">Subscribes List</a></li>
+                    <li><a href="{{route('admin.usersAdmin')}}">Admin Users</a></li>
+                    <li><a href="{{route('admin.usersCustomer')}}">All Users</a></li>
+                    <li><a href="{{route('admin.subscribes')}}">Subscribes List</a></li>
                 </ul>
             </li>
             <li>

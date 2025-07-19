@@ -57,7 +57,9 @@
             height: 30px;
             padding: 4px 10px;
         }
-        
+        .showPassword{
+          cursor:pointer;
+        }
     </style>
 
      @stack('css')
