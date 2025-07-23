@@ -63,62 +63,21 @@
 </style>
 @endpush @section('contents')
 
-<div class="content-header row">
-    <div class="content-header-left col-md-6 col-12 mb-2">
-        <h3 class="content-header-title mb-0">Medias Library</h3>
-        <div class="row breadcrumbs-top">
-            <div class="breadcrumb-wrapper col-12">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
-                    <li class="breadcrumb-item active">Medias Library</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
-        <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-outline-primary" href="{{route('admin.medies')}}">
-                <i class="fa-solid fa-rotate"></i>
-            </a>
-        </div>
-    </div>
+<div class="page-titles">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
+        <li class="breadcrumb-item">Media Assests</li>
+    </ol>
 </div>
 
-<div class="content-body">
-    <!-- Basic Elements start -->
-    <section class="basic-elements">
+
         <div class="row">
             <div class="col-md-12">
                 @include(adminTheme().'alerts')
-                @isset(json_decode(Auth::user()->permission->permission, true)['medies']['add'])
+
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            
-                            <div class="fileuploard-div">
-                                    <div>
-                                        <p>Drag & Drop your files or <span class="filepond--label-action" tabindex="0">Browse</span></p>
-                                    </div>
-                                    <div class="progress">
-                                      <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <div>
-                                        @if(session('errors'))
-                                        <ul style="list-style: none;">
-                                            @foreach ($errors->all() as $error)
-                                            <li style="color: #f44336; font-weight: bold; font-size: 12px;">{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                        @endif
-                                        <span class="Errormsg" style="color: #FF5722;"></span>
-                                    </div>
-                                    <div>
-                                        <label>
-                                            <input type="file" name="file" class="fileupload" style="cursor: pointer;"/>
-                                        </label>
-                                    </div>
-                                </div>
-                            
                             <form action="{{route('admin.mediesCreate')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="fileuploard-div">
@@ -145,12 +104,12 @@
                         </div>
                     </div>
                 </div>
-                @endisset
+           
                 <form action="{{route('admin.medies')}}" class="mediaAllForm" >
                     <input type="hidden" name="actionType" value="allDelete">
                     <div class="card">
                         <div class="card-header" style="border-bottom: 1px solid #e3ebf3;">
-                            <h4 class="card-title">Medias All 
+                            <h4 class="card-title">Media All 
                                 @isset(json_decode(Auth::user()->permission->permission, true)['medies']['delete'])
                                 <a href="javascript:void(0)" class="btn btn-sm btn-danger mediaAllDeleted">Delete</a>
                                 @endisset
@@ -178,20 +137,12 @@
                 </form>
             </div>
         </div>
-    </section>
-    <!-- Basic Inputs end -->
-</div>
 
 @endsection @push('js')
 
 <script type="text/javascript">
     $(".progressdivs1").hide();
     $(document).ready(function () {
-        
-        
-        
-        
-        
         
         
         $('.fileupload').change(function(){

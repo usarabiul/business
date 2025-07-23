@@ -2967,7 +2967,6 @@ public function userRoles(Request $r){
             'mail_encryption' => 'nullable|max:100',
             'mail_username' => 'nullable|max:100',
             'mail_password' => 'nullable|max:100',
-            'admin_mails' => 'nullable|max:1000',
         ]);
 
       $general->mail_from_address=$r->mail_from_address;

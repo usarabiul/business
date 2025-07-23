@@ -163,11 +163,10 @@
                         <div class="card-content">
                             <div class="card-body">
                                 @if ($errors->has('galleries*'))
-                                <div class="invalid-feedback">The Galleries Must Be a Number</p>
+                                <div class="invalid-feedback">The Galleries Must Be a Number</div>
                                 @endif
                                 <select  name="galleries[]" class="selectpicker form-control" title="Select Gallery" multiple="">
-      \
-                                @foreach($galleries as $i=>$gallery)
+                                    @foreach($galleries as $i=>$gallery)
                                     <option value="{{$gallery->id}}" @foreach($page->postTags as $posttag) {{$posttag->reff_id==$gallery->id?'selected':''}} @endforeach>{{$gallery->name}}</option>
                                     @endforeach
                                 </select>
