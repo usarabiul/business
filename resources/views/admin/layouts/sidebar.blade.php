@@ -26,15 +26,22 @@
                 </a>
             </li>
            
-            <li>
+            <li class="{{Request::is('admin/services*')? 'mm-active' : ''}}">
                 <a class="has-arrow ai-icon" href="javascript:void(0);" aria-expanded="false">
                     <i class="flaticon-381-book"></i>
                     <span class="nav-text">Services</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="index.html">All Services</a></li>
-                    <li><a href="orders.html">New Service</a></li>
-                    <li><a href="order-id.html">Categories</a></li>
+                    <li><a href="{{route('admin.services')}}" 
+                    @unless (
+                        Request::is('admin/services/categories*') || 
+                        Request::is('admin/services/tags*')
+                    )
+                        class="{{ Request::is('admin/services*') ? 'mm-active' : '' }}"
+                    @endunless
+                    >All Services</a></li>
+                    <li><a href="{{route('admin.servicesAction','create')}}">New Service</a></li>
+                    <li><a href="{{route('admin.servicesCategories')}}" class="{{Request::is('admin/services/categories*')? 'mm-active' : ''}}">Categories</a></li>
                 </ul>
             </li>
              <li class="{{Request::is('admin/medies*')? 'mm-active' : ''}}">

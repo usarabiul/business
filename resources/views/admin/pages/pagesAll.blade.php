@@ -3,13 +3,7 @@
 <title>{{websiteTitle('Pages List')}}</title>
 @endsection 
 @push('css')
-<style type="text/css">
-    .table:not(.table-bordered) thead th
-    {
-        border-top: none;
-        background: #f5f5f5;
-    }
-</style>
+
 @endpush 
 @section('contents')
 <div class="row">
@@ -74,13 +68,13 @@
                             <tr>
                                 <td class="text-center" ><strong class="text-black">{{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}</strong></td>
                                 <td>
-                                    <span>
+                                    <b>
                                         <a href="{{route('pageView',$page->slug?:'no-slug')}}" target="_blank">{{$page->name}}
                                         </a>
                                         @if($page->template)
                                         <span style="color: #ccc;">({{$page->template}})</span>
                                         @endif
-                                        </span>
+                                        </b>
                                         <br />
                                     @if($page->featured==true)
                                     <span><i class="fa fa-star" style="color: #faca51;"></i></span>

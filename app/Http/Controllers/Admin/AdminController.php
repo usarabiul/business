@@ -636,8 +636,9 @@ class AdminController extends Controller
           }
         }
 
-        if($r->created_at){
-          $page->created_at =$r->created_at;
+        $createDate = $r->created_at ? Carbon::parse($r->created_at . ' ' . Carbon::now()->format('H:i:s')) : Carbon::now();
+        if (!$createDate->isSameDay($page->created_at)) {
+          $page->created_at = $createDate;
         }
         $page->status =$r->status?'active':'inactive';
         $page->featured =$r->featured?1:0;
@@ -768,7 +769,10 @@ class AdminController extends Controller
         ->where(function($q) use ($r,$allPer) {
 
             if($r->search){
-                $q->where('search_key','LIKE','%'.$r->search.'%');
+                $q->where('name','LIKE','%'.$r->search.'%')
+                ->orWhereHas('serviceCategories',function($qq)use($r){
+                  $qq->where('name','LIKE','%'.$r->search.'%');
+                });
             }
             
             if($r->startDate || $r->endDate)
@@ -799,7 +803,7 @@ class AdminController extends Controller
 
 
         })
-        ->select(['id','name','slug','view','type','created_at','addedby_id','status','fetured'])
+        ->select(['id','name','slug','view','type','created_at','addedby_id','status','featured'])
         ->paginate(25)->appends([
           'search'=>$r->search,
           'status'=>$r->status,
@@ -844,17 +848,18 @@ class AdminController extends Controller
         }
         
         //Check Authorized User
-        $allPer = empty(json_decode(Auth::user()->permission->permission, true)['services']['all']);
-        if($allPer && $service->addedby_id!=Auth::id()){
-          Session()->flash('error','You are unauthorized Try!!');
-          return redirect()->route('admin.services');
-        }
+        // $allPer = empty(json_decode(Auth::user()->permission->permission, true)['services']['all']);
+        // if($allPer && $service->addedby_id!=Auth::id()){
+        //   Session()->flash('error','You are unauthorized Try!!');
+        //   return redirect()->route('admin.services');
+        // }
         
         //Update Service  Start
         if($action=='update'){
             
             $check = $r->validate([
                 'name' => 'required|max:191',
+                'slug' => 'nullable|max:240',
                 'seo_title' => 'nullable|max:200',
                 'seo_description' => 'nullable|max:250',
                 'catagoryid.*' => 'nullable|numeric',
@@ -880,6 +885,7 @@ class AdminController extends Controller
               $src  =$service->id;
               $srcType  =1;
               $fileUse  =1;
+              $author=Auth::id();
               uploadFile($file,$src,$srcType,$fileUse);
             }
             ///////Image Upload End////////////
@@ -888,10 +894,7 @@ class AdminController extends Controller
     
             $files=$r->file('gallery_image');
             if($files){
-    
-                foreach($files as $file)
-                {
-                    
+                foreach($files as $file){
                     $file =$file;
                     $src  =$service->id;
                     $srcType  =1;
@@ -903,61 +906,40 @@ class AdminController extends Controller
             }
     
             ///////Gallery Upload End////////////
-    
-            $slug =Str::slug($r->name);
-            if($slug==null){
-            $service->slug=$service->id;
-            }else{
-            if(Post::where('type',3)->where('slug',$slug)->whereNotIn('id',[$service->id])->count() >0){
-            $service->slug=$slug.'-'.$service->id;
-            }else{
-            $service->slug=$slug;
+            $service->auto_slug = $r->slug ? true : false;
+            $slug = Str::slug($r->slug ?: $r->name);
+            if (!$slug) {
+                $service->slug = $service->id;
+            } else {
+                $exists = Post::where('type', 3)->where('slug', $slug)->where('id', '!=', $service->id)->exists();
+                $service->slug = $exists ? $slug . '-' . $service->id : $slug;
             }
-            }
-            if($r->created_at){
-              $service->created_at =$r->created_at;
+            $createDate = $r->created_at ? Carbon::parse($r->created_at . ' ' . Carbon::now()->format('H:i:s')) : Carbon::now();
+            if (!$createDate->isSameDay($service->created_at)) {
+              $service->created_at = $createDate;
             }
             $service->status =$r->status?'active':'inactive';
-            $service->fetured =$r->fetured?1:0;
+            $service->featured =$r->featured?1:0;
             $service->editedby_id =Auth::id();
             $service->save();
             
             //Category posts
-            if($r->categoryid){
-            
-            $service->serviceCtgs()->whereNotIn('reff_id',$r->categoryid)->delete();
-            
-            for ($i=0; $i < count($r->categoryid); $i++) {
-            
-            $ctg = $service->serviceCtgs()->where('reff_id',$r->categoryid[$i])->first();
-            
-            if($ctg){}else{
-            $ctg =new PostAttribute();
-            $ctg->src_id=$service->id;
-            $ctg->reff_id=$r->categoryid[$i];
-            $ctg->type=0;
-            }
-            $ctg->drag=$i;
-            $ctg->save();
-            }
-            
-            }else{
-            $service->serviceCtgs()->delete();
-            }
-           
-           ///////Search Key Start////////
-            $key='';
-            $key.=$service->name;
-            //Post Category Name
-            foreach($service->serviceCtgs as $postctg){
-                if($ctg=Attribute::where('type',0)->find($postctg->catagory_id)){
-                    $key.=' '.$ctg->name;
+            if ($r->categoryid) {
+                $service->serviceCtgs()->whereNotIn('reff_id', $r->categoryid)->delete();
+                foreach ($r->categoryid as $index => $categoryId) {
+                  $ctg = $service->serviceCtgs()->where('reff_id', $categoryId)->first();
+                  if (!$ctg) {
+                      $ctg = new PostAttribute();
+                      $ctg->src_id = $service->id;
+                      $ctg->reff_id = $categoryId;
+                      $ctg->type = 0;
+                  }
+                  $ctg->drag = $index;
+                  $ctg->save();
                 }
+            } else {
+                $service->serviceCtgs()->delete();
             }
-            $service->search_key=Str::limit($key,450);
-            
-            $service->save();
-            ///////Search Key End////////
     
             Session()->flash('success','Your Are Successfully Done');
             return redirect()->back();
@@ -1080,7 +1062,7 @@ class AdminController extends Controller
           }
 
     })
-    ->select(['id','name','slug','parent_id','view','type','created_at','addedby_id','status','fetured'])
+    ->select(['id','name','slug','parent_id','view','type','created_at','addedby_id','status','featured'])
         ->paginate(25)->appends([
           'search'=>$r->search,
           'status'=>$r->status,
@@ -1103,11 +1085,14 @@ class AdminController extends Controller
         
         //Add Service Category  Start
         if($action=='create'){
-            
-            $category =new Attribute();
-            $category->type =0;
-            $category->status ='temp';
-            $category->addedby_id =Auth::id();
+            $category =Attribute::where('type',0)->where('status','temp')->where('addedby_id',Auth::id())->first();
+            if(!$category){
+              $category =new Attribute();
+              $category->type =0;
+              $category->status ='temp';
+              $category->addedby_id =Auth::id();
+            }
+            $category->created_at =Carbon::now();
             $category->save();
 
             return redirect()->route('admin.servicesCategoriesAction',['edit',$category->id]);
@@ -1159,6 +1144,7 @@ class AdminController extends Controller
                 $src  =$category->id;
                 $srcType  =3;
                 $fileUse  =1;
+                $author=Auth::id();
                 uploadFile($file,$src,$srcType,$fileUse);
             }
           
@@ -1171,24 +1157,25 @@ class AdminController extends Controller
                 $src  =$category->id;
                 $srcType  =3;
                 $fileUse  =2;
+                $author=Auth::id();
                 uploadFile($file,$src,$srcType,$fileUse);
             }
     
             ///////Banner Upload End////////////
     
-    
-           $slug =Str::slug($r->name);
-           if($slug==null){
-            $category->slug=$category->id;
-           }else{
-            if(Attribute::where('type',0)->where('slug',$slug)->whereNotIn('id',[$category->id])->count() >0){
-            $category->slug=$slug.'-'.$category->id;
-            }else{
-            $category->slug=$slug;
-            }
-           }
+          $slug = Str::slug($r->name);
+          if (!$slug) {
+              $category->slug = $category->id;
+          } else {
+              $exists = Attribute::where('type', 0)->where('slug', $slug)->where('id', '!=', $category->id)->exists();
+              $category->slug = $exists ? $slug . '-' . $category->id : $slug;
+          }
+          $createDate = $r->created_at ? Carbon::parse($r->created_at . ' ' . Carbon::now()->format('H:i:s')) : Carbon::now();
+          if (!$createDate->isSameDay($category->created_at)) {
+            $category->created_at = $createDate;
+          }
           $category->status =$r->status?'active':'inactive';
-          $category->fetured =$r->fetured?1:0;
+          $category->featured =$r->featured?1:0;
           $category->editedby_id =Auth::id();
           $category->save();
           

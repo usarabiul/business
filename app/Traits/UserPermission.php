@@ -23,12 +23,12 @@ trait UserPermission{
 				// empty(json_decode($activeRole->permission, true)['pages']['add']) && \Route::is('admin.pagesUpdate') ||
 				// empty(json_decode($activeRole->permission, true)['pages']['delete']) && \Route::is('admin.pagesDelete') ||
 
-				empty(json_decode($activeRole->permission, true)['services']['list']) && \Route::is('admin.services')||
-				empty(json_decode($activeRole->permission, true)['services']['add']) && \Route::is('admin.servicesCreate') ||
-				empty(json_decode($activeRole->permission, true)['services']['add']) && \Route::is('admin.servicesUpdate') ||
-				empty(json_decode($activeRole->permission, true)['services']['delete']) && \Route::is('admin.servicesDelete') ||
+				// empty(json_decode($activeRole->permission, true)['services']['list']) && \Route::is('admin.services')||
+				// empty(json_decode($activeRole->permission, true)['services']['add']) && \Route::is('admin.servicesCreate') ||
+				// empty(json_decode($activeRole->permission, true)['services']['add']) && \Route::is('admin.servicesUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['services']['delete']) && \Route::is('admin.servicesDelete') ||
 
-				empty(json_decode($activeRole->permission, true)['servicesOthers']['category']) && \Request::is('admin/services/categories*') ||
+				// empty(json_decode($activeRole->permission, true)['servicesOthers']['category']) && \Request::is('admin/services/categories*') ||
 
 				// empty(json_decode($activeRole->permission, true)['medies']['list']) && \Route::is('admin.medies')||
 				// empty(json_decode($activeRole->permission, true)['medies']['add']) && \Route::is('admin.mediesCreate') ||
