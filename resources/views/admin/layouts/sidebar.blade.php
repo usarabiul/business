@@ -63,14 +63,14 @@
                     <li><a href="order-id.html">Menu Setting</a></li>
                 </ul>
             </li>
-            <li>
+            <li class="{{Request::is('admin/users*')? 'mm-active' : ''}}">
                 <a class="has-arrow ai-icon" href="javascript:void(0);" aria-expanded="false">
                     <i class="flaticon-381-user"></i>
                     <span class="nav-text">Users Manage</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('admin.usersAdmin')}}">Admin Users</a></li>
-                    <li><a href="{{route('admin.usersCustomer')}}">All Users</a></li>
+                    <li><a href="{{route('admin.usersAdmin')}}" class="{{Request::is('admin/users/admin*')? 'mm-active' : ''}}">Admin Users</a></li>
+                    <li><a href="{{route('admin.usersCustomer')}}" class="{{Request::is('admin/users/customer*')? 'mm-active' : ''}}">All Users</a></li>
                     <li><a href="{{route('admin.subscribes')}}">Subscribes List</a></li>
                 </ul>
             </li>

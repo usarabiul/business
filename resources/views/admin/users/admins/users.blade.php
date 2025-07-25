@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-6">
         <div class="text-start text-md-end mb-3">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#AddUser"><i class="fa-solid fa-plus"></i> Add User</button>
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#AddUser"><i class="fa-solid fa-plus"></i> Add User</button>
             <a href="{{route('admin.usersAdmin')}}" class="btn btn-success">
                 <i class="fa-solid fa-rotate"></i>
             </a>
@@ -77,16 +77,18 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
+            <div class="table-responsive" style="min-height:300px;" >
+                <table class="table table-responsive-md">
                     <thead>
                         <tr>
                             <th style="min-width: 100px; width: 100px;">
-                            <label style="cursor: pointer; margin-bottom: 0;"> <input class="checkbox" type="checkbox" class="form-control" id="checkall" /> All <span class="checkCounter"></span> </label>
+                                <label> 
+                                    <input type="checkbox" class="form-check-input m-0" id="checkall"  > All <span class="checkCounter"></span>     
+                                </label>
                             </th>
                             <th style="min-width: 80px;">Image</th>
                             <th style="min-width: 250px; width: 250px;">Name</th>
-                            <th style="min-width: 150px;">Email</th>
+                            <th style="min-width: 150px;">Email/Mobile</th>
                             <th style="min-width: 100px;">Role</th>
                             <th style="min-width: 80px;">Status</th>
                             <th style="min-width: 80px; width: 80px;">Action</th>
@@ -96,9 +98,13 @@
                         @foreach($users as $i=>$user)
                         <tr>
                             <td>
-                                @if($user->id==Auth::id()) @else
-                                <input class="checkbox" type="checkbox" name="checkid[]" value="{{$user->id}}" />
+                                @if($user->id!=Auth::id())
+                                <label>
+                                    <input type="checkbox" class="form-check-input" name="checkid[]" value="{{$user->id}}" >
+                                </label>
                                 @endif
+                                <br />
+                                <b>SL:</b> 
                                 {{$users->currentpage()==1?$i+1:$i+($users->perpage()*($users->currentpage() - 1))+1}}
                             </td>
                             <td style="padding: 0 3px; text-align: center;">
@@ -109,7 +115,7 @@
                             <td>
                                 <a href="{{route('admin.usersAdminAction',['edit',$user->id])}}" class="invoice-action-view mr-1">{{$user->name}} </a>
                             </td>
-                            <td>{{$user->email}}</td>
+                            <td>{{$user->email?:$user->mobile}}</td>
                             <td> 
                                 @if($user->permission)
                                 <span class="badge badge-info">{{$user->permission->name}}</span>
@@ -125,16 +131,18 @@
                                 <span class="badge badge-danger">Inactive </span>
                                 @endif
                             </td>
-                            <td style="padding: 5px 0; text-align: center;">
-                                <a href="{{route('admin.usersAdminAction',['edit',$user->id])}}" class="invoice-action-view mr-1">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                @isset(json_decode(Auth::user()->permission->permission, true)['adminUsers']['delete']) @if($user->id==Auth::id()) @else
-                                <a href="{{route('admin.usersAdminAction',['delete',$user->id])}}" onclick="return confirm('Are You Want To Delete')" class="invoice-action-edit cursor-pointer danger">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                                @endif @endisset
-                                <br />
+                            <td style="text-align:center;">
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{route('admin.usersAdminAction',['edit',$user->id])}}"><i class="fa fa-edit"></i> Edit </a>
+                                        @if($user->id!=Auth::id())
+                                        <a class="dropdown-item" href="{{route('admin.usersAdminAction',['delete',$user->id])}}" onclick="return confirm('Are You Want To Remove')" ><i class="fa fa-trash"></i> Remove </a>
+                                        @endif 
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -148,7 +156,7 @@
 </div>
 
 
-@isset(json_decode(Auth::user()->permission->permission, true)['adminUsers']['add'])
+
 <!-- Modal -->
 <div class="modal fade text-left" id="AddUser" tabindex="-1" >
     <div class="modal-dialog" role="document">
@@ -157,23 +165,18 @@
                 @csrf
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel1">Add Admin User</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times; </span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <div class="controls">
-                            <input type="text" class="form-control {{$errors->has('username')?'error':''}}" name="username" placeholder="Enter Email/Mobile" value="" required="" />
-                        </div>
-                    </div>
+                    <label class="form-label">Email/Mobile</label>
+                    <input type="text" class="form-control {{$errors->has('username')?'error':''}}" name="username" placeholder="Enter Email/Mobile" value="" required="" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn grey btn-outline-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add User</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-@endisset @endsection @push('js') @endpush
+ @endsection @push('js') @endpush

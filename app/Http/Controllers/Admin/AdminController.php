@@ -2476,12 +2476,16 @@ class AdminController extends Controller
       //Add New User Start
       if($action=='create' && $r->isMethod('post')){
 
-        $user =User::where('email',$r->email)->orWhere('name',$r->name)->first();
+        $user =User::where('email',$r->email_mobile)->orWhere('mobile',$r->email_mobile)->first();
         if(!$user){
           $password=Str::random(8);
           $user =new User();
           $user->name =$r->name;
-          $user->email =$r->email;
+          if(filter_var($r->email_mobile, FILTER_VALIDATE_EMAIL)){
+            $user->email =$r->email_mobile;
+          }else{
+            $user->mobile =$r->email_mobile;
+          }
           $user->password_show=$password;
           $user->password=Hash::make($password);
           $user->save();
@@ -2502,9 +2506,9 @@ class AdminController extends Controller
       if($action=='update' && $r->isMethod('post')){
 
           $check = $r->validate([
-                'name' => 'required|max:100|unique:users,name,'.$user->id,
-                'email' => 'required|max:100|unique:users,email,'.$user->id,
-                'mobile' => 'nullable|max:20|unique:users,mobile,'.$user->id,
+                'name' => 'required|max:100',
+                'email'  => 'nullable|email|max:100|unique:users,email,' . $user->id . '|required_without:mobile',
+                'mobile' => 'nullable|max:20|unique:users,mobile,' . $user->id . '|required_without:email',
                 'gender' => 'nullable|max:10',
                 'address' => 'nullable|max:191',
                 'division' => 'nullable|numeric',
