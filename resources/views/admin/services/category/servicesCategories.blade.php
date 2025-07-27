@@ -109,11 +109,14 @@
                                     <span style="color: #ccc;">
                                         <i class="fa fa-user" style="color: #1ab394;"></i>
                                         {{$category->user?$category->user->name:'No Author'}}
-
                                     </span>
                                 </td>
                                 <td>
-                                    {{$category->parent?$category->parent->name:'PARENT'}}
+                                    @if($category->parent)
+                                    <span>{{$category->parent->name}}</span>
+                                    @else
+                                    <span class="badge badge-primary">PARENT</span>
+                                    @endif
                                 </td>
                                 <td style="padding: 5px; text-align: center;">
                                     <img src="{{asset($category->image())}}" style="max-width: 80px; max-height: 50px;" />

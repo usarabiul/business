@@ -7,16 +7,26 @@
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
-            <li>
+            <li class="{{Request::is('admin/posts*')? 'mm-active' : ''}}">
                 <a class="has-arrow ai-icon" href="javascript:void(0);" aria-expanded="false">
                     <i class="flaticon-381-diploma"></i>
                     <span class="nav-text">Posts</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="index.html">All Posts</a></li>
-                    <li><a href="orders.html">New Post</a></li>
-                    <li><a href="order-id.html">Categories</a></li>
-                    <li><a href="reviews.html">Comments</a></li>
+                    <li><a href="{{route('admin.posts')}}"
+                    class="
+                    @unless (
+                        Request::is('admin/posts/categories*') || 
+                        Request::is('admin/posts/tags*') || 
+                        Request::is('admin/posts/comments*')
+                    )
+                    {{Request::is('admin/posts*')? 'mm-active' : ''}}
+                    @endunless
+                    "
+                    >All Posts</a></li>
+                    <li><a href="{{route('admin.postsAction',['create'])}}">New Post</a></li>
+                    <li><a href="{{route('admin.postsCategories')}}" class="{{Request::is('admin/posts/categories*')? 'mm-active' : ''}}">Categories</a></li>
+                    <li><a href="{{route('admin.postsCommentsAll')}}" class="{{Request::is('admin/posts/comments*')? 'mm-active' : ''}}">Comments</a></li>
                 </ul>
             </li>
             <li class="{{Request::is('admin/pages*')? 'mm-active' : ''}}">
@@ -33,12 +43,14 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{route('admin.services')}}" 
+                    class="
                     @unless (
                         Request::is('admin/services/categories*') || 
                         Request::is('admin/services/tags*')
                     )
-                        class="{{ Request::is('admin/services*') ? 'mm-active' : '' }}"
+                        {{ Request::is('admin/services*') ? 'mm-active' : '' }}
                     @endunless
+                    "
                     >All Services</a></li>
                     <li><a href="{{route('admin.servicesAction','create')}}">New Service</a></li>
                     <li><a href="{{route('admin.servicesCategories')}}" class="{{Request::is('admin/services/categories*')? 'mm-active' : ''}}">Categories</a></li>
@@ -74,16 +86,16 @@
                     <li><a href="{{route('admin.subscribes')}}">Subscribes List</a></li>
                 </ul>
             </li>
-            <li>
+            <li class="{{Request::is('admin/setting*')? 'mm-active' : ''}}">
                 <a class="has-arrow ai-icon" href="javascript:void(0);" aria-expanded="false">
                     <i class="flaticon-381-controls-2"></i>
                     <span class="nav-text">Apps Setting</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('admin.setting','general')}}">General Setting</a></li>
-                    <li><a href="{{route('admin.setting','mail')}}">Mail Setting</a></li>
-                    <li><a href="{{route('admin.setting','sms')}}">SMS Setting</a></li>
-                    <li><a href="{{route('admin.setting','social')}}">Social Setting</a></li>
+                    <li><a href="{{route('admin.setting','general')}}" class="{{Request::is('admin/setting/general*')? 'mm-active' : ''}}">General Setting</a></li>
+                    <li><a href="{{route('admin.setting','mail')}}" class="{{Request::is('admin/setting/mail*')? 'mm-active' : ''}}" >Mail Setting</a></li>
+                    <li><a href="{{route('admin.setting','sms')}}" class="{{Request::is('admin/setting/sms*')? 'mm-active' : ''}}">SMS Setting</a></li>
+                    <li><a href="{{route('admin.setting','social')}}" class="{{Request::is('admin/setting/social*')? 'mm-active' : ''}}" >Social Setting</a></li>
                 </ul>
             </li>
         </ul>

@@ -138,7 +138,6 @@ Route::post('/menus/items/post/{id}',[MenusController::class,'menusItemsPost'])-
 Route::any('/menus/items/{action}/{id}',[MenusController::class,'menusItemsAction'])->name('menusItemsAction');
 // Menus Route End
 
-
 //User Management
 Route::get('/users/admin/',[AdminController::class,'usersAdmin'])->name('usersAdmin');
 Route::any('/users/admin/{action}/{id?}',[AdminController::class,'usersAdminAction'])->name('usersAdminAction');

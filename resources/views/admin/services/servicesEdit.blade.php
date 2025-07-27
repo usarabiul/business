@@ -172,7 +172,7 @@
                         <div class="invalid-feedback">The Category Must Be a Number</p>
                         @endif
                         <div class="catagorydiv">
-                            <ul>
+                            <ul style="padding: 0;">
                                 @foreach($categories as $ctg)
                                 <li>
                                     <label>

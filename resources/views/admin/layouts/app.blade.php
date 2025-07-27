@@ -29,7 +29,9 @@
       .form-control {
           color: #252525;
       }
-
+      .page-titles {
+          margin-bottom: 0;
+        }
       .form-control:hover, .form-control:focus, .form-control.active{
           color: #656363;
       }

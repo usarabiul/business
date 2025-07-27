@@ -9,14 +9,14 @@ trait UserPermission{
 		if($activeRole =Permission::find(Auth::user()->permission_id)){
 			if(
 				
-				empty(json_decode($activeRole->permission, true)['posts']['list']) && \Route::is('admin.posts')||
-				empty(json_decode($activeRole->permission, true)['posts']['add']) && \Route::is('admin.postsCreate') ||
-				empty(json_decode($activeRole->permission, true)['posts']['add']) && \Route::is('admin.postsUpdate') ||
-				empty(json_decode($activeRole->permission, true)['posts']['delete']) && \Route::is('admin.postsDelete') ||
+				// empty(json_decode($activeRole->permission, true)['posts']['list']) && \Route::is('admin.posts')||
+				// empty(json_decode($activeRole->permission, true)['posts']['add']) && \Route::is('admin.postsCreate') ||
+				// empty(json_decode($activeRole->permission, true)['posts']['add']) && \Route::is('admin.postsUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['posts']['delete']) && \Route::is('admin.postsDelete') ||
 
-				empty(json_decode($activeRole->permission, true)['postsOther']['category']) && \Request::is('admin/posts/categories*')||
-				empty(json_decode($activeRole->permission, true)['postsOther']['tags']) && \Request::is('admin/posts/tags*')||
-				empty(json_decode($activeRole->permission, true)['postsOther']['comments']) && \Request::is('admin/posts/comments*')||
+				// empty(json_decode($activeRole->permission, true)['postsOther']['category']) && \Request::is('admin/posts/categories*')||
+				// empty(json_decode($activeRole->permission, true)['postsOther']['tags']) && \Request::is('admin/posts/tags*')||
+				// empty(json_decode($activeRole->permission, true)['postsOther']['comments']) && \Request::is('admin/posts/comments*')||
 
 				// empty(json_decode($activeRole->permission, true)['pages']['list']) && \Route::is('admin.pages')||
 				// empty(json_decode($activeRole->permission, true)['pages']['add']) && \Route::is('admin.pagesCreate') ||
