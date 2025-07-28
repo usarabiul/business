@@ -35,36 +35,36 @@ trait UserPermission{
 				// empty(json_decode($activeRole->permission, true)['medies']['add']) && \Route::is('admin.mediesUpdate') ||
 				// empty(json_decode($activeRole->permission, true)['medies']['delete']) && \Route::is('admin.mediesDelete') || 
 
-				empty(json_decode($activeRole->permission, true)['clients']['list']) && \Route::is('admin.clients')||
-				empty(json_decode($activeRole->permission, true)['clients']['add']) && \Route::is('admin.clientsCreate') ||
-				empty(json_decode($activeRole->permission, true)['clients']['add']) && \Route::is('admin.clientsUpdate') ||
-				empty(json_decode($activeRole->permission, true)['clients']['delete']) && \Route::is('admin.clientsDelete') ||
+				// empty(json_decode($activeRole->permission, true)['clients']['list']) && \Route::is('admin.clients')||
+				// empty(json_decode($activeRole->permission, true)['clients']['add']) && \Route::is('admin.clientsCreate') ||
+				// empty(json_decode($activeRole->permission, true)['clients']['add']) && \Route::is('admin.clientsUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['clients']['delete']) && \Route::is('admin.clientsDelete') ||
 
-				empty(json_decode($activeRole->permission, true)['brands']['list']) && \Route::is('admin.brands')||
-				empty(json_decode($activeRole->permission, true)['brands']['add']) && \Route::is('admin.brandsCreate') ||
-				empty(json_decode($activeRole->permission, true)['brands']['add']) && \Route::is('admin.brandsUpdate') ||
-				empty(json_decode($activeRole->permission, true)['brands']['delete']) && \Route::is('admin.brandsDelete') ||
+				// empty(json_decode($activeRole->permission, true)['brands']['list']) && \Route::is('admin.brands')||
+				// empty(json_decode($activeRole->permission, true)['brands']['add']) && \Route::is('admin.brandsCreate') ||
+				// empty(json_decode($activeRole->permission, true)['brands']['add']) && \Route::is('admin.brandsUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['brands']['delete']) && \Route::is('admin.brandsDelete') ||
 
-				empty(json_decode($activeRole->permission, true)['sliders']['list']) && \Route::is('admin.sliders')||
-				empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slidersCreate') ||
-				empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slidersUpdate') ||
-				empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slideCreate') ||
-				empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slideUpdate') ||
-				empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slideDrug') ||
-				empty(json_decode($activeRole->permission, true)['sliders']['delete']) && \Route::is('admin.slidersDelete') ||
+				// empty(json_decode($activeRole->permission, true)['sliders']['list']) && \Route::is('admin.sliders')||
+				// empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slidersCreate') ||
+				// empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slidersUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slideCreate') ||
+				// empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slideUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['sliders']['add']) && \Route::is('admin.slideDrug') ||
+				// empty(json_decode($activeRole->permission, true)['sliders']['delete']) && \Route::is('admin.slidersDelete') ||
 
-				empty(json_decode($activeRole->permission, true)['galleries']['list']) && \Route::is('admin.galleries')||
-				empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesCreate') ||
-				empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesUpdate') ||
-				empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesImagesCreate') ||
-				empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesImagesUpdate') ||
-				empty(json_decode($activeRole->permission, true)['galleries']['delete']) && \Route::is('admin.galleriesDelete') ||
+				// empty(json_decode($activeRole->permission, true)['galleries']['list']) && \Route::is('admin.galleries')||
+				// empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesCreate') ||
+				// empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesImagesCreate') ||
+				// empty(json_decode($activeRole->permission, true)['galleries']['add']) && \Route::is('admin.galleriesImagesUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['galleries']['delete']) && \Route::is('admin.galleriesDelete') ||
 
-				empty(json_decode($activeRole->permission, true)['menus']['list']) && \Route::is('admin.menus')||
-				empty(json_decode($activeRole->permission, true)['menus']['add']) && \Route::is('admin.menusCreate') ||
-				empty(json_decode($activeRole->permission, true)['menus']['add']) && \Route::is('admin.menusUpdate') ||
-				empty(json_decode($activeRole->permission, true)['menus']['delete']) && \Route::is('admin.menusItemsDelete') ||
-				empty(json_decode($activeRole->permission, true)['menus']['delete']) && \Route::is('admin.menusDelete') ||
+				// empty(json_decode($activeRole->permission, true)['menus']['list']) && \Route::is('admin.menus')||
+				// empty(json_decode($activeRole->permission, true)['menus']['add']) && \Route::is('admin.menusCreate') ||
+				// empty(json_decode($activeRole->permission, true)['menus']['add']) && \Route::is('admin.menusUpdate') ||
+				// empty(json_decode($activeRole->permission, true)['menus']['delete']) && \Route::is('admin.menusItemsDelete') ||
+				// empty(json_decode($activeRole->permission, true)['menus']['delete']) && \Route::is('admin.menusDelete') ||
 
 				empty(json_decode($activeRole->permission, true)['users']['list']) && \Route::is('admin.customerUsers')||
 				empty(json_decode($activeRole->permission, true)['users']['add']) && \Route::is('admin.usersCustomerAdd') ||

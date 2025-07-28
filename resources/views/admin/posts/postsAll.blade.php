@@ -89,9 +89,9 @@
                                     </label>
                                 </th>
                                 <th style="min-width: 300px;">Post Name</th>
-                                <th style="min-width: 100px;">Image</th>
+                                <th style="min-width: 80px;width:80px;">Image</th>
                                 <th style="min-width: 200px;">Category</th>
-                                <th style="min-width: 100px;">Action/Author</th>
+                                <th style="min-width: 60px;width:60px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,14 +114,18 @@
                                     <span class="badge badge-danger">Inactive </span>
                                     @else
                                     <span class="badge badge-danger">Draft </span>
-                                    @endif @if($post->fetured==true)
-                                    <span><i class="fa fa-star" style="color: #1ab394;"></i></span>
+                                    @endif @if($post->featured==true)
+                                    <span><i class="fa fa-star" style="color: #faca51;"></i></span>
                                     @endif
 
                                     <span><i class="fa fa-calendar" style="color: #1ab394;"></i> {{$post->created_at->format('d-m-Y')}}</span>
 
                                     <span>
                                         <a href="{{route('admin.postsComments',$post->id)}}"><i class="fa fa-comment" style="color: #1ab394;"></i> ({{$post->postComments->where('status','<>','temp')->count()}})</a>
+                                    </span>
+                                    <span>
+                                        <i class="fa fa-user" style="color: #1ab394;"></i>
+                                        {{Str::limit($post->user?$post->user->name:'No Author',12)}}
                                     </span>
                                 </td>
                                 <td style="padding: 5px; text-align: center;">
@@ -130,18 +134,16 @@
                                 <td>
                                     @foreach($post->postCategories as $i=>$ctg) {{$i==0?'':'-'}} {{$ctg->name}} @endforeach
                                 </td>
-                                <td style="padding: 5px; text-align: center;">
-                                    
-                                    <a href="{{route('admin.postsAction',['edit',$post->id])}}" class="btn btn-sm btn-info">Edit</a>
-
-                                    @isset(json_decode(Auth::user()->permission->permission, true)['posts']['delete'])
-                                    <a href="{{route('admin.postsAction',['delete',$post->id])}}" onclick="return confirm('Are You Want To Delete?')" class="btn btn-sm btn-danger" ><i class="fa fa-trash"></i></a>
-                                    @endisset
-                                    <br />
-                                    <span>
-                                        <i class="fa fa-user" style="color: #1ab394;"></i>
-                                        {{Str::limit($post->user?$post->user->name:'No Author',15)}}
-                                    </span>
+                                <td style="text-align:center;">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{route('admin.postsAction',['edit',$post->id])}}"><i class="fa fa-edit"></i> Edit </a>
+                                            <a class="dropdown-item" href="{{route('admin.postsAction',['delete',$post->id])}}" onclick="return confirm('Are You Want To Delete')" ><i class="fa fa-trash"></i> Delete </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

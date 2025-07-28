@@ -217,7 +217,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label>Published Date</label>
+                                    <label class="form-label">Published Date</label>
                                     <input type="date" class="form-control form-control-sm" name="created_at" value="{{$page->created_at->format('Y-m-d')}}">
                                     @if ($errors->has('created_at'))
                                     <div class="invalid-feedback">{{ $errors->first('created_at') }}</div>

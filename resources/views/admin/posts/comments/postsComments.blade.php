@@ -29,7 +29,7 @@
     </div>
     <div class="col-md-6">
         <div class="text-start text-md-end mb-3">
-			<a href="{{route('admin.postsComments',[$post->id,'actionType'=>'addComment'])}}" class="btn btn-info"><i class="fa-solid fa-plus"></i> Add Category</a>
+			<a href="{{route('admin.postsComments',[$post->id,'actionType'=>'addComment'])}}" class="btn btn-info"><i class="fa-solid fa-plus"></i> Add Comment</a>
             <a href="{{route('admin.postsCommentsAll')}}" class="btn btn-success">
                 <i class="fa-solid fa-rotate"></i>
             </a>
@@ -42,7 +42,7 @@
 
 <div class="card">
 <div class="card-header " style="border-bottom: 1px solid #e3ebf3;">
-	<h4 class="card-title">Categories List</h4>
+	<h4 class="card-title">Comments List</h4>
 </div>
 	<div class="card-content">
 		<div class="card-body">
@@ -143,6 +143,11 @@
 						</td>
 					</tr>
 					@endforeach
+					@if($comments->count()==0)
+					<tr>
+						<td colspan="4" style="text-align: center;">No Record Found</td>
+					</tr>
+					@endif
 				</tbody>
 			</table>
 			{{$comments->links('pagination')}}

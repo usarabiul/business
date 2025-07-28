@@ -132,7 +132,8 @@
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach @if($categories->count()==0)
+                            @endforeach 
+                            @if($categories->count()==0)
                             <tr>
                                 <td colspan="5" style="text-align: center;">No Record Found</td>
                             </tr>

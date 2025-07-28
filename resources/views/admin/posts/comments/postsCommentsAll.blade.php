@@ -137,6 +137,11 @@
 						</td>
 					</tr>
 					@endforeach
+					@if($comments->count()==0)
+					<tr>
+						<td colspan="5" style="text-align: center;">No Record Found</td>
+					</tr>
+					@endif
 				</tbody>
 			</table>
 			{{$comments->links('pagination')}}

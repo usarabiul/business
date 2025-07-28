@@ -129,7 +129,7 @@
                 <div class="card-content">
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="image">Post Image</label>
+                            <label class="form-label">Post Image</label>
                             <input type="file" name="image" class="form-control {{$errors->has('image')?'error':''}}" />
                             @if ($errors->has('image'))
                             <div class="invalid-feedback">{{ $errors->first('image') }}</div>
@@ -142,7 +142,7 @@
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label for="banner">Post Banner</label>
+                            <label class="form-label">Post Banner</label>
                             <input type="file" name="banner" class="form-control {{$errors->has('banner')?'error':''}}" />
                             @if ($errors->has('banner'))
                             <div class="invalid-feedback">{{ $errors->first('banner') }}</div>
@@ -236,7 +236,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label>Published Date</label>
+                            <label class="form-label">Published Date</label>
                             <input type="date" class="form-control form-control-sm" name="created_at" value="{{$post->created_at->format('Y-m-d')}}">
                             @if ($errors->has('created_at'))
                             <div class="invalid-feedback">{{ $errors->first('created_at') }}</div>

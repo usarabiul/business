@@ -42,7 +42,8 @@
                     <span class="nav-text">Services</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('admin.services')}}" 
+                    <li>
+                      <a href="{{route('admin.services')}}" 
                     class="
                     @unless (
                         Request::is('admin/services/categories*') || 
@@ -68,11 +69,11 @@
                     <span class="nav-text">General Widget</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="index.html">Clients</a></li>
-                    <li><a href="orders.html">Brands</a></li>
-                    <li><a href="order-id.html">Sliders</a></li>
-                    <li><a href="order-id.html">Galleries</a></li>
-                    <li><a href="order-id.html">Menu Setting</a></li>
+                    <li><a href="{{route('admin.clients')}}">Clients</a></li>
+                    <li><a href="{{route('admin.brands')}}">Brands</a></li>
+                    <li><a href="{{route('admin.sliders')}}">Sliders</a></li>
+                    <li><a href="{{route('admin.galleries')}}">Galleries</a></li>
+                    <li><a href="{{route('admin.menus')}}">Menu Setting</a></li>
                 </ul>
             </li>
             <li class="{{Request::is('admin/users*')? 'mm-active' : ''}}">

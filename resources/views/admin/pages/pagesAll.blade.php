@@ -66,7 +66,7 @@
                         <tbody>
                             @foreach($pages as $i=>$page)
                             <tr>
-                                <td class="text-center" ><strong class="text-black">{{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}</strong></td>
+                                <td class="text-center"><strong class="text-black">{{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}</strong></td>
                                 <td>
                                     <b>
                                         <a href="{{route('pageView',$page->slug?:'no-slug')}}" target="_blank">{{$page->name}}

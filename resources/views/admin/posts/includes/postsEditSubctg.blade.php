@@ -5,7 +5,7 @@
         <input type="checkbox" class="form-check-input" name="categoryid[]" value="{{$subctg->id}}"
 
         @foreach($post->postCtgs as $postctg)
-        {{$postctg->reff_id==$ctg->id?'checked':''}} 
+        {{$postctg->reff_id==$subctg->id?'checked':''}} 
         @endforeach
         >
         {{$subctg->name}}

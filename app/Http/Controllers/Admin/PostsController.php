@@ -117,7 +117,7 @@ class PostsController extends Controller
         }
 
       })
-      ->select(['id','name','slug','created_at','addedby_id','status'])
+      ->select(['id','name','slug','created_at','addedby_id','status','featured'])
       ->paginate(25)->appends([
         'search'=>$r->search,
         'status'=>$r->status,
@@ -211,46 +211,41 @@ class PostsController extends Controller
           uploadFile($file,$src,$srcType,$fileUse,$author);
         }
         ///////Banner Uploard End////////////
+        $post->auto_slug = $r->slug ? true : false;
+        $slug = Str::slug($r->slug ?: $r->name);
+        if (!$slug) {
+            $post->slug = $post->id;
+        } else {
+            $exists = Post::where('type', 1)->where('slug', $slug)->where('id', '!=', $post->id)->exists();
+            $post->slug = $exists ? $slug . '-' . $post->id : $slug;
+        }
+        $createDate = $r->created_at ? Carbon::parse($r->created_at . ' ' . Carbon::now()->format('H:i:s')) : Carbon::now();
+        if (!$createDate->isSameDay($post->created_at)) {
+          $post->created_at = $createDate;
+        }
 
-        $slug =Str::slug($r->slug?:$r->name);
-        if($slug==null){
-          $post->slug=$post->id;
-        }else{
-          if(Post::where('type',1)->where('slug',$slug)->whereNotIn('id',[$post->id])->count() >0){
-          $post->slug=$slug.'-'.$post->id;
-          }else{
-          $post->slug=$slug;
-          }
-        }
-        if($r->created_at){
-          $post->created_at =$r->created_at;
-        }
         $post->status =$r->status?'active':'inactive';
-        $post->fetured =$r->fetured?1:0;
+        $post->featured =$r->featured?1:0;
         $post->editedby_id =Auth::id();
         $post->save();
 
          //Category posts
-        if($r->categoryid){
+         if ($r->categoryid) {
 
-          $post->postCtgs()->whereNotIn('reff_id',$r->categoryid)->delete();
-    
-          for ($i=0; $i < count($r->categoryid); $i++) {
-    
-            $ctg = $post->postCtgs()->where('reff_id',$r->categoryid[$i])->first();
-    
-            if(!$ctg){
-              $ctg =new PostAttribute();
-              $ctg->src_id=$post->id;
-              $ctg->reff_id=$r->categoryid[$i];
-              $ctg->type=1;
-            }
-            $ctg->drag=$i;
-            $ctg->save();
-          }
-    
-        }else{
-            $post->postCtgs()->delete();
+              $post->postCtgs()->whereNotIn('reff_id', $r->categoryid)->delete();
+              foreach ($r->categoryid as $index => $categoryId) {
+                $ctg = $post->postCtgs()->where('reff_id', $categoryId)->first();
+                if (!$ctg) {
+                    $ctg = new PostAttribute();
+                    $ctg->src_id = $post->id;
+                    $ctg->reff_id = $categoryId;
+                    $ctg->type = 1;
+                }
+                $ctg->drag = $index;
+                $ctg->save();
+              }
+          } else {
+              $post->postCtgs()->delete();
           }
           
           //Tag posts
