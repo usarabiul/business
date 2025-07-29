@@ -41,110 +41,107 @@ class MenusController extends Controller
     public function menusAction(Request $r,$action,$id=null){
 
       //Add Menu  Start
-      if($action=='create'){
-        $menu =Attribute::latest()->where('type',8)->where('parent_id',null)->where('addedby_id',Auth::id())->where('status','temp')->first();
-        if(!$menu){
-        $menu =new Attribute();
-        $menu->status ='temp';
-        $menu->type =8;
-        $menu->addedby_id =Auth::id();
-        $menu->save();
-        }else{
-        $menu->created_at =Carbon::now();
-        $menu->save();
-        }
-        
-        return redirect()->route('admin.menusAction',['edit',$menu->id]);
-    }
-    //Add Menu  End
-    
-    
-    if($r->ajax() && $action=='menuFilter'){
-        
-        
-        $menu =null;
-        if($r->location){
-            $menu =Attribute::where('type',8)->where('location',$r->location)->first();
-        }
-        
-        if($r->addmenuitem){
-            $menu =Attribute::where('type',8)->where('location',$r->menulocation)->first();
+        if($action=='create'){
+            $menu =Attribute::latest()->where('type',8)->where('parent_id',null)->where('addedby_id',Auth::id())->where('status','temp')->first();
             if(!$menu){
-                $menu = new Attribute();
-                $menu->status ='active';
-                $menu->type =8;
-                $menu->location =$r->menulocation;
-                $menu->name=$r->menulocation;
-                $menu->addedby_id =Auth::id();
-                $menu->save();
+            $menu =new Attribute();
+            $menu->status ='temp';
+            $menu->type =8;
+            $menu->addedby_id =Auth::id();
+            $menu->save();
+            }else{
+            $menu->created_at =Carbon::now();
+            $menu->save();
             }
             
-            $parent =Attribute::where('type',8)->find($menu->category_id);
-              if(!$parent){
-                $parent =$menu;
-              }
-            
-            
-            if($r->parentItem && $menu->id!=$r->parentItem){
-                $menu =$menu->MenuItems()->find($r->parentItem);
-            }
-            if($menu){
-                $items =new  Attribute();
-                $items->parent_id=$menu->id;
-                $items->category_id=$parent->id;
-                $items->type=8;
-                $items->src_id= $r->addmenuitem;
-                $items->menu_type=$r->addtype?:0;
-                $items->status='active';
-                $items->addedby_id=auth::id();
-                $items->save();
+            return redirect()->route('admin.menusAction',['edit',$menu->id]);
+        }
+        //Add Menu  End
+    
+    
+        if($r->ajax() && $action=='menuFilter'){
+    
+            $menu =null;
+            if($r->location){
+                $menu =Attribute::where('type',8)->where('location',$r->location)->first();
             }
             
-        }
-        
-        if($r->nextLavelMenu){
-            $menu =Attribute::where('type',8)->where('location',$r->menulocation)->first();
-            if($menu){
-                $menu =$menu->MenuItems()->find($r->nextLavelMenu);
+            if($r->addmenuitem){
+                $menu =Attribute::where('type',8)->where('location',$r->menulocation)->first();
+                if(!$menu){
+                    $menu = new Attribute();
+                    $menu->status ='active';
+                    $menu->type =8;
+                    $menu->location =$r->menulocation;
+                    $menu->name=$r->menulocation;
+                    $menu->addedby_id =Auth::id();
+                    $menu->save();
+                }
+                
+                $parent =Attribute::where('type',8)->find($menu->category_id);
+                if(!$parent){
+                    $parent =$menu;
+                }
+                
+                
+                if($r->parentItem && $menu->id!=$r->parentItem){
+                    $menu =$menu->MenuItems()->find($r->parentItem);
+                }
+                if($menu){
+                    $items =new  Attribute();
+                    $items->parent_id=$menu->id;
+                    $items->category_id=$parent->id;
+                    $items->type=8;
+                    $items->src_id= $r->addmenuitem;
+                    $items->menu_type=$r->addtype?:0;
+                    $items->status='active';
+                    $items->addedby_id=auth::id();
+                    $items->save();
+                }
+                
             }
-        }
-        if($r->backmenuitem){
-            $menu =Attribute::where('type',8)->find($r->backmenuitem);
-        }
-        
-        if($r->removeItem){
-            $menu =Attribute::where('type',8)->where('location',$r->menulocation)->first();
-            if($menu){
-               $item =$menu->MenuItems()->find($r->removeItem);
-               if($item){
-                   $this->deleteMenuAndSubItems($item);
-                //   $menu =Attribute::where('type',8)->find($item->parent_id);
-                //   $item->delete();
-               }
+            
+            if($r->nextLavelMenu){
+                $menu =Attribute::where('type',8)->where('location',$r->menulocation)->first();
+                if($menu){
+                    $menu =$menu->MenuItems()->find($r->nextLavelMenu);
+                }
             }
+            if($r->backmenuitem){
+                $menu =Attribute::where('type',8)->find($r->backmenuitem);
+            }
+            
+            if($r->removeItem){
+                $menu =Attribute::where('type',8)->where('location',$r->menulocation)->first();
+                if($menu){
+                $item =$menu->MenuItems()->find($r->removeItem);
+                if($item){
+                    $this->deleteMenuAndSubItems($item);
+                    //   $menu =Attribute::where('type',8)->find($item->parent_id);
+                    //   $item->delete();
+                }
+                }
+            }
+            
+            
+            
+            $menuView =View(adminTheme().'menus.includes.menuSelection',compact('menu'))->render();
+            
+            return Response()->json([
+                'success' => true,
+                'viewData' => $menuView
+            ]);
         }
-        
-        
-        
-        $menuView =View(adminTheme().'menus.includes.menuSelection',compact('menu'))->render();
-        
-        return Response()->json([
-              'success' => true,
-              'viewData' => $menuView
-          ]);
-    }
       
       
-      $menu =Attribute::where('type',8)->find($id);
-      
-      if(!$menu){
-        Session()->flash('error','This Menu Are Not Found');
-        return redirect()->route('admin.menus');
-      }
-
-      //Check Authorized User
+        $menu =Attribute::where('type',8)->find($id);
+        if(!$menu){
+            Session()->flash('error','This Menu Are Not Found');
+            return redirect()->route('admin.menus');
+        }
+        //Check Authorized User
         $allPer = empty(json_decode(Auth::user()->permission->permission, true)['menus']['all']);
-        if($allPer && $role->addedby_id!=Auth::id()){
+        if($allPer && $menu->addedby_id!=Auth::id()){
           Session()->flash('error','You are unauthorized Try!!');
           return redirect()->route('admin.menus');
         }
@@ -195,29 +192,12 @@ class MenusController extends Controller
                 }
             }
 
-            if($r->deleteItems){
+            if($r->checkid){
 
-                for ($i =0; $i < count($r->deleteItems); $i++){
-                    if($item =Attribute::find($r->deleteItems[$i])){
+                for ($i =0; $i < count($r->checkid); $i++){
+                    if($item =Attribute::find($r->checkid[$i])){
                         //Menus sub Menu Delete
-                        
                         $this->deleteMenuAndSubItems($item);
-                        
-                        // foreach($item->subMenus as $sub){
-                        //     // $sub->parent_id=$item->parent_id;
-                        //     // $sub->save();
-                        // }
-                
-                        // //Menu  Media File Delete
-                        // $medies =Media::where('src_type',3)->where('src_id',$item->id)->get();
-                        // foreach ($medies as  $media) {
-                        //     if(File::exists($media->file_url)){
-                        //         File::delete($media->file_url);
-                        //     }
-                        //     $media->delete();
-                        // }
-                
-                        // $item->delete();
                     }
                 }
             }
@@ -249,15 +229,16 @@ class MenusController extends Controller
         }
         //Delete Menu End
         
-      $pages =Post::latest()->where('type',0)->where('status','<>','temp')->get();
-      $blogCategories =Attribute::latest()->where('type',6)->where('parent_id',null)->where('status','<>','temp')->get();
-      $productCategories =Attribute::latest()->where('type',0)->where('parent_id',null)->where('status','<>','temp')->get();
-      $parent =Attribute::where('type',8)->find($menu->category_id);
-      if(!$parent){
-        $parent =$menu;
-      }
+        $pages =Post::latest()->where('type',0)->where('status','<>','temp')->get();
+ 
+        $blogCategories =Attribute::latest()->where('type',6)->where('parent_id',null)->where('status','<>','temp')->get();
+        $productCategories =Attribute::latest()->where('type',0)->where('parent_id',null)->where('status','<>','temp')->get();
+        $parent =Attribute::where('type',8)->find($menu->category_id);
+        if(!$parent){
+            $parent =$menu;
+        }
       
-      return view(adminTheme().'menus.menuEdit',compact('menu','pages','blogCategories','productCategories','parent'));
+        return view(adminTheme().'menus.menuEdit',compact('menu','pages','blogCategories','productCategories','parent'));
 
     }
     

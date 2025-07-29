@@ -66,23 +66,29 @@
                         </ul>
                     </div>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive" style="min-height:300px;">
                     <table class="table table-responsive-md">
                         <thead>
                             <tr>
-                                <th style="min-width: 60px;">
-                                    <label style="cursor: pointer; margin-bottom: 0;"> <input class="checkbox" type="checkbox" class="form-control" id="checkall" /> All <span class="checkCounter"></span> </label>
+                                <th style="min-width: 100px;width:100px;">
+                                    <label>
+                                        <input type="checkbox" class="form-check-input m-0" id="checkall"  > All <span class="checkCounter"></span>
+                                    </label>
                                 </th>
                                 <th style="min-width: 300px;">Brand Name</th>
-                                <th style="max-width: 100px;">Image</th>
-                                <th style="min-width: 160px;">Action</th>
+                                <th style="max-width: 80px;width:80px;">Image</th>
+                                <th style="min-width: 60px;width:60px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($brands as $i=>$brand)
                             <tr>
                                 <td>
-                                    <input class="checkbox" type="checkbox" name="checkid[]" value="{{$brand->id}}" /><br />
+                                    <label>
+                                        <input type="checkbox" class="form-check-input" name="checkid[]" value="{{$brand->id}}" >
+                                    </label>
+                                    <br />
+                                   <b>SL:</b>
                                     {{$brands->currentpage()==1?$i+1:$i+($brands->perpage()*($brands->currentpage() - 1))+1}}
                                 </td>
                                 <td>
@@ -94,23 +100,28 @@
                                     <span class="badge badge-danger">Inactive </span>
                                     @else
                                     <span class="badge badge-danger">Draft </span>
-                                    @endif @if($brand->fetured==true)
-                                    <span><i class="fa fa-star" style="color: #1ab394;"></i></span>
+                                    @endif @if($brand->featured==true)
+                                    <span><i class="fa fa-star" style="color: #faca51;"></i></span>
                                     @endif
-                                    <span style="font-size: 10px;">
+                                    <span>
                                         <i class="fa fa-user" style="color: #1ab394;"></i>
                                         {{$brand->user?$brand->user->name:'No Author'}}
                                     </span>
+                                    <span style="color: #ccc;"><i class="fa fa-calendar" style="color: #1ab394;"></i> {{$brand->created_at->format('d-m-Y')}}</span>
                                 </td>
                                 <td style="padding: 5px; text-align: center;">
                                     <img src="{{asset($brand->image())}}" style="max-width: 80px; max-height: 50px;" />
                                 </td>
-                                <td class="center">
-                                    <a href="{{route('admin.brandsAction',['edit',$brand->id])}}" class="btn btn-md btn-info">Edit</a>
-
-                                    @isset(json_decode(Auth::user()->permission->permission, true)['brands']['delete'])
-                                    <a href="{{route('admin.brandsAction',['delete',$brand->id])}}" class="btn btn-md btn-danger" onclick="return confirm('Are You Want To Delete?')"><i class="fa fa-trash"></i></a>
-                                    @endisset
+                                <td style="text-align:center;">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{route('admin.brandsAction',['edit',$brand->id])}}"><i class="fa fa-edit"></i> Edit </a>
+                                            <a class="dropdown-item" href="{{route('admin.brandsAction',['delete',$brand->id])}}" onclick="return confirm('Are You Want To Delete')" ><i class="fa fa-trash"></i> Delete </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

@@ -3,96 +3,94 @@
 @endsection @push('css')
 <style type="text/css"></style>
 @endpush @section('contents')
-
-<div class="content-header row">
-    <div class="content-header-left col-md-6 col-12 mb-2">
-        <h3 class="content-header-title mb-0">Galleries List</h3>
-        <div class="row breadcrumbs-top">
-            <div class="breadcrumb-wrapper col-12">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
-                    <li class="breadcrumb-item active">Galleries List</li>
-                </ol>
-            </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
+                <li class="breadcrumb-item">Galleries List</li>
+            </ol>
         </div>
     </div>
-    <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
-        <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-        	@isset(json_decode(Auth::user()->permission->permission, true)['galleries']['add'])
-            <a class="btn btn-outline-primary" href="{{route('admin.galleriesAction',['create'])}}">Add Gallery</a>
-          @endisset
-            <a class="btn btn-outline-primary reloadPage1" href="{{route('admin.galleries')}}">
+    <div class="col-md-6">
+        <div class="text-start text-md-end mb-3">
+            <a href="{{route('admin.galleriesAction','create')}}" class="btn btn-info"><i class="fa-solid fa-plus"></i> Add Gallery</a>
+            <a href="{{route('admin.galleries')}}" class="btn btn-success">
                 <i class="fa-solid fa-rotate"></i>
             </a>
         </div>
     </div>
 </div>
 
-<div class="content-body">
-    <!-- Basic Elements start -->
-    <section class="basic-elements">
-        <div class="row">
-            <div class="col-md-12">
-                @include(adminTheme().'alerts')
-                <div class="card">
-                    <div class="card-header" style="border-bottom: 1px solid #e3ebf3;">
-                        <h4 class="card-title">Galleries List</h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th style="min-width: 60px;">S:L</th>
-                                            <th style="min-width: 300px;">Gallery Name</th>
-                                            <th style="max-width: 100px;">Items</th>
-                                            <th style="min-width: 200px;width:200px;">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($galleries as $i=>$gallery)
-                                        <tr>
-                                            <td>
-                                                {{$i+1}}
-                                            </td>
-                                            <td>
-                                                <span>{{$gallery->name}}</span><br />
-                                                @if($gallery->status=='active')
-                                                <span><i class="fa fa-check" style="color: #1ab394;"></i></span>
-                                                @else
-                                                <span><i class="fa fa-times" style="color: #ed5565;"></i></span>
-                                                @endif @if($gallery->fetured==true)
-                                                <span><i class="fa fa-star" style="color: #1ab394;"></i></span>
-                                                @endif
-                                                <span style="font-size: 10px;">
-                                                    <i class="fa fa-user" style="color: #1ab394;"></i>
-                                                    {{$gallery->user?$gallery->user->name:'No Author'}}
-                                                </span>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                ({{$gallery->galleryImages->count()}}) Images
-                                            </td>
-                                            <td class="center">
-                                                <a href="{{route('admin.galleriesAction',['edit',$gallery->id])}}" class="btn btn-md btn-info">Config</a>
 
-                                                @isset(json_decode(Auth::user()->permission->permission, true)['galleries']['delete'])
-                                                <a href="{{route('admin.galleriesAction',['delete',$gallery->id])}}" class="btn btn-md btn-danger" onclick="return confirm('Are You Want To Delete?')"><i class="fa fa-trash"></i></a>
-                                                @endisset
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                {{$galleries->links('pagination')}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+@include(adminTheme().'alerts')
+<div class="card">
+    <div class="card-header" style="border-bottom: 1px solid #e3ebf3;">
+        <h4 class="card-title">Galleries List</h4>
+    </div>
+    <div class="card-content">
+        <div class="card-body">
+            <div class="table-responsive" style="min-height:300px;" >
+                <table class="table table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 50px;width:50px;">S:L</th>
+                            <th style="min-width: 300px;">Gallery Name</th>
+                            <th style="max-width: 100px;text-align:center;">Items</th>
+                            <th style="min-width: 60px;width:60px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($galleries as $i=>$gallery)
+                        <tr>
+                            <td>{{$galleries->currentpage()==1?$i+1:$i+($galleries->perpage()*($galleries->currentpage() - 1))+1}}</td>
+                            <td>
+                                <span>{{$gallery->name}}
+                                    @if($gallery->location)
+                                    <span style="color:#ccc;">({{$gallery->location}})</span>
+                                    @endif
+                                </span>
+                                <br />
+                                @if($gallery->status=='active')
+                                <span class="badge badge-success">Active </span>
+                                @elseif($gallery->status=='inactive')
+                                <span class="badge badge-danger">Inactive </span>
+                                @else
+                                <span class="badge badge-danger">Draft </span>
+                                @endif
+                                <span style="color:#ccc;">
+                                    <i class="fa fa-user" style="color: #1ab394;"></i>
+                                    {{$gallery->user?$gallery->user->name:'No Author'}}
+                                </span>
+                            </td>
+                            <td style="text-align: center;">
+                                ({{$gallery->galleryImages->count()}}) items
+                            </td>
+                            <td style="text-align:center;">
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{route('admin.galleriesAction',['edit',$gallery->id])}}"><i class="fa fa-edit"></i> Edit </a>
+                                        <a class="dropdown-item" href="{{route('admin.galleriesAction',['delete',$gallery->id])}}" onclick="return confirm('Are You Want To Delete')" ><i class="fa fa-trash"></i> Delete </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                        @if($galleries->count()==0)
+                            <tr>
+                                <td colspan="4" class="text-center">No Result Found</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+                {{$galleries->links('pagination')}}
             </div>
         </div>
-    </section>
-    <!-- Basic Inputs end -->
+    </div>
 </div>
+
 
 @endsection @push('js') @endpush

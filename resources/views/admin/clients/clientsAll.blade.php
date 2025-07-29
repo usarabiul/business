@@ -110,6 +110,7 @@
                                         <i class="fa fa-user" style="color: #1ab394;"></i>
                                         {{$client->user?$client->user->name:'No Author'}}
                                     </span>
+                                    <span style="color: #ccc;"><i class="fa fa-calendar" style="color: #1ab394;"></i> {{$client->created_at->format('d-m-Y')}}</span>
                                 </td>
                                 <td style="padding: 5px; text-align: center;">
                                     <img src="{{asset($client->image())}}" style="max-width: 80px; max-height: 50px;" />

@@ -63,17 +63,19 @@
                     <span class="nav-text">Media Assests</span>
                 </a>
             </li>
-            <li>
+            <li
+            class="{{Request::is('admin/clients*') || Request::is('admin/brands*') || Request::is('admin/sliders*') || Request::is('admin/galleries*') || Request::is('admin/menus*') ? 'mm-active' : ''}}"
+            >
                 <a class="has-arrow ai-icon" href="javascript:void(0);" aria-expanded="false">
                     <i class="flaticon-381-app"></i>
                     <span class="nav-text">General Widget</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('admin.clients')}}">Clients</a></li>
-                    <li><a href="{{route('admin.brands')}}">Brands</a></li>
-                    <li><a href="{{route('admin.sliders')}}">Sliders</a></li>
-                    <li><a href="{{route('admin.galleries')}}">Galleries</a></li>
-                    <li><a href="{{route('admin.menus')}}">Menu Setting</a></li>
+                    <li><a href="{{route('admin.clients')}}" class="{{Request::is('admin/clients*')? 'mm-active' : ''}}" >Clients</a></li>
+                    <li><a href="{{route('admin.brands')}}" class="{{Request::is('admin/brands*')? 'mm-active' : ''}}">Brands</a></li>
+                    <li><a href="{{route('admin.sliders')}}" class="{{Request::is('admin/sliders*')? 'mm-active' : ''}}">Sliders</a></li>
+                    <li><a href="{{route('admin.galleries')}}" class="{{Request::is('admin/galleries*')? 'mm-active' : ''}}">Galleries</a></li>
+                    <li><a href="{{route('admin.menus')}}" class="{{Request::is('admin/menus*')? 'mm-active' : ''}}">Menu Setting</a></li>
                 </ul>
             </li>
             <li class="{{Request::is('admin/users*')? 'mm-active' : ''}}">

@@ -116,7 +116,9 @@
      <script>
       $(document).ready(function(){
 
-        $( ".sortable" ).sortable();
+        $(".sortable").sortable({
+          handle: ".dragable"
+        });
         $( ".sortable" ).disableSelection();
 
         $('.slugEdit').click(function(){
@@ -286,7 +288,7 @@
         $(document).ready(function(){
           $('#checkall').click(function() {
               var checked = $(this).prop('checked');
-              $('input:checkbox').prop('checked', checked);
+              $("input[name='checkid[]']:checkbox").prop('checked', checked);
               updateCounter();
             });
         });

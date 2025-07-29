@@ -188,7 +188,7 @@ class AdminController extends Controller
             'district' => 'nullable|numeric',
             'city' => 'nullable|numeric',
             'postal_code' => 'nullable|max:20',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
           ]);
   
           $user->name =$r->name;
@@ -325,7 +325,7 @@ class AdminController extends Controller
   public function mediesCreate(Request $r){
 
       $check = $r->validate([
-          'images.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp,pdf,docx,zip,rar,mp4,webm,mov,wmv,mp3|max:25600',
+          'images.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,pdf,docx,zip,rar,mp4,webm,mov,wmv,mp3|max:25600',
       ]);
 
       if(!$check){
@@ -591,8 +591,8 @@ class AdminController extends Controller
             'seo_title' => 'nullable|max:120',
             'seo_description' => 'nullable|max:200',
             'seo_keyword' => 'nullable',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,webp|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,webp|max:2048',
         ]);
 
 
@@ -863,8 +863,8 @@ class AdminController extends Controller
                 'seo_title' => 'nullable|max:200',
                 'seo_description' => 'nullable|max:250',
                 'catagoryid.*' => 'nullable|numeric',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'gallery_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+                'gallery_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
             ]);
     
             if(!$check){
@@ -1120,8 +1120,8 @@ class AdminController extends Controller
                 'name' => 'required|max:191',
                 'seo_title' => 'nullable|max:200',
                 'seo_desc' => 'nullable|max:200',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+                'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
             ]);
     
             if(!$check){
@@ -1351,8 +1351,8 @@ class AdminController extends Controller
             'name' => 'required|max:191',
             'seo_title' => 'nullable|max:200',
             'seo_desc' => 'nullable|max:250',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
         ]);
 
         $client->name=$r->name;
@@ -1514,7 +1514,7 @@ class AdminController extends Controller
           }
 
       })
-      ->select(['id','name','slug','type','created_at','addedby_id','status','fetured'])
+      ->select(['id','name','slug','type','created_at','addedby_id','status','featured'])
       ->paginate(25)->appends([
         'search'=>$r->search,
         'status'=>$r->status,
@@ -1539,10 +1539,11 @@ class AdminController extends Controller
         $brand =Attribute::where('type',2)->where('status','temp')->where('addedby_id',Auth::id())->first();
         if(!$brand){
           $brand =new Attribute();
+          $brand->type =2;
+          $brand->status ='temp';
+          $brand->addedby_id =Auth::id();
         }
-        $brand->type =2;
-        $brand->status ='temp';
-        $brand->addedby_id =Auth::id();
+        $brand->created_at =Carbon::now();
         $brand->save();
 
         return redirect()->route('admin.brandsAction',['edit',$brand->id]);
@@ -1569,15 +1570,15 @@ class AdminController extends Controller
               'name' => 'required|max:191',
               'seo_title' => 'nullable|max:200',
               'seo_desc' => 'nullable|max:250',
-              'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-              'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+              'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+              'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
           ]);
 
           $brand->name=$r->name;
           $brand->short_description=$r->short_description;
           $brand->description=$r->description;
           $brand->seo_title=$r->seo_title;
-          $brand->short_description=$r->short_description;
+          $brand->seo_description=$r->seo_description;
           $brand->seo_keyword=$r->seo_keyword;
 
            ///////Image UploadStart////////////
@@ -1607,19 +1608,19 @@ class AdminController extends Controller
             }
 
             ///////Banner Upload End////////////
-
-            $slug =Str::slug($r->name);
-            if($slug==null){
-              $brand->slug=$brand->id;
-            }else{
-              if(Attribute::where('type',2)->where('slug',$slug)->whereNotIn('id',[$brand->id])->count() >0){
-              $brand->slug=$slug.'-'.$brand->id;
-              }else{
-              $brand->slug=$slug;
-              }
+            $slug = Str::slug($r->name);
+            if (!$slug) {
+                $brand->slug = $brand->id;
+            } else {
+                $exists = Attribute::where('type',2)->where('slug', $slug)->where('id', '!=', $brand->id)->exists();
+                $brand->slug = $exists ? $slug . '-' . $brand->id : $slug;
+            }
+            $createDate = $r->created_at ? Carbon::parse($r->created_at . ' ' . Carbon::now()->format('H:i:s')) : Carbon::now();
+            if (!$createDate->isSameDay($brand->created_at)) {
+              $brand->created_at = $createDate;
             }
             $brand->status =$r->status?'active':'inactive';
-            $brand->fetured =$r->fetured?1:0;
+            $brand->featured =$r->featured?1:0;
             $brand->editedby_id =Auth::id();
             $brand->save();
 
@@ -1657,23 +1658,6 @@ class AdminController extends Controller
 
       $allPer = empty(json_decode(Auth::user()->permission->permission, true)['sliders']['all']);
 
-      // Add Slider Action Start
-      if($r->actionType=='addSlider'){
-        $slider =Attribute::latest()->where('type',1)->where('addedby_id',Auth::id())->where('status','temp')->first();
-        if(!$slider){
-        $slider =new Attribute();
-        $slider->type =1;
-        $slider->status ='temp';
-        $slider->addedby_id =Auth::id();
-        $slider->save();
-        }else{
-        $slider->created_at =Carbon::now();
-        $slider->save();
-        }
-        return redirect()->route('admin.slidersEdit',$slider->id);
-      }
-      // Add Slider Action End
-
       $sliders=Attribute::latest()->where('type',1)->where('status','<>','temp')->where('parent_id',null)
       ->where(function($q) use ($allPer) {
           // Check Permission
@@ -1681,10 +1665,8 @@ class AdminController extends Controller
            $q->where('addedby_id',auth::id()); 
           }
       })
-      ->select(['id','name','location','type','created_at','addedby_id','status','fetured'])
+      ->select(['id','name','location','type','created_at','addedby_id','status','featured'])
       ->paginate(25);
-
-      
 
       return view(adminTheme().'sliders.slidersAll',compact('sliders'));
     }
@@ -1694,15 +1676,14 @@ class AdminController extends Controller
       if($action=='create'){
         $slider =Attribute::latest()->where('type',1)->where('addedby_id',Auth::id())->where('status','temp')->first();
         if(!$slider){
-        $slider =new Attribute();
-        $slider->type =1;
-        $slider->status ='temp';
-        $slider->addedby_id =Auth::id();
-        $slider->save();
-        }else{
+          $slider =new Attribute();
+          $slider->type =1;
+          $slider->status ='temp';
+          $slider->addedby_id =Auth::id();
+        }
         $slider->created_at =Carbon::now();
         $slider->save();
-        }
+
         return redirect()->route('admin.slidersAction',['edit',$slider->id]);
       }
       //Create Slider End
@@ -1726,9 +1707,9 @@ class AdminController extends Controller
         $check = $r->validate([
             'name' => 'required|max:191',
             'location' => 'nullable|max:200',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:25600',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+            'images.*' => 'nullable|image|mimes:mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:25600',
+            'banner' => 'nullable|image|mimes:mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
         ]);
 
         $activeSlider =Attribute::where('type',1)->where('location',$r->location)->whereNotIn('id',[$slider->id])->first();
@@ -1806,16 +1787,12 @@ class AdminController extends Controller
           }
         }
         ///////Slide Drag Update End////////////
-
-        $slug =Str::slug($r->name);
-        if($slug==null){
-          $slider->slug=$slider->id;
-        }else{
-          if(Attribute::where('type',1)->where('slug',$slug)->whereNotIn('id',[$slider->id])->count() >0){
-          $slider->slug=$slug.'-'.$slider->id;
-          }else{
-          $slider->slug=$slug;
-          }
+        $slug = Str::slug($r->name);
+        if (!$slug) {
+            $slider->slug = $slider->id;
+        } else {
+            $exists = Attribute::where('type',1)->where('slug', $slug)->where('id', '!=', $slider->id)->exists();
+            $slider->slug = $exists ? $slug . '-' . $slider->id : $slug;
         }
         $slider->status =$r->status?'active':'inactive';
         $slider->editedby_id =Auth::id();
@@ -1878,7 +1855,8 @@ class AdminController extends Controller
               'name' => 'nullable|max:191',
               'buttonText' => 'nullable|max:200',
               'buttonLink' => 'nullable|max:200',
-              'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+              'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+              'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
           ]);
 
         $slide->name =$r->name;
@@ -1898,6 +1876,21 @@ class AdminController extends Controller
         }
         
         ///////Image Upload End////////////
+
+        ///////Banner Upload End////////////
+
+        if($r->hasFile('banner')){
+
+          $file =$r->banner;
+          $src  =$slide->id;
+          $srcType  =3;
+          $fileUse  =2;
+          $author=Auth::id();
+          uploadFile($file,$src,$srcType,$fileUse,$author);
+
+        }
+
+        ///////Banner Upload End////////////
 
         $slug =Str::slug($r->name);
         if($slug==null){
@@ -1955,7 +1948,7 @@ class AdminController extends Controller
            $q->where('addedby_id',auth::id()); 
           }
       })
-      ->select(['id','name','location','type','created_at','addedby_id','status','fetured'])
+      ->select(['id','name','location','type','created_at','addedby_id','status','featured'])
       ->paginate(25);
       return view(adminTheme().'galleries.galleriesAll',compact('galleries'));
 
@@ -1999,9 +1992,9 @@ class AdminController extends Controller
         $check = $r->validate([
             'name' => 'required|max:191',
             'location' => 'nullable|max:200',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:25600',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:25600',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
         ]);
 
         $activeGallery =Attribute::where('type',4)->where('location',$r->location)->whereNotIn('id',[$gallery->id])->first();
@@ -2300,7 +2293,7 @@ class AdminController extends Controller
                  'city' => 'nullable|max:191',
                  'postal_code' => 'nullable|max:20',
                  'role' => 'nullable|numeric',
-                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
      
              ]);
      
@@ -2518,7 +2511,7 @@ class AdminController extends Controller
                 'city' => 'nullable|numeric',
                 'created_at' => 'nullable|date|max:50',
                 'postal_code' => 'nullable|max:20',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
             ]);
     
           $user->name =$r->name;
@@ -2839,9 +2832,9 @@ public function userRoles(Request $r){
             'meta_author' => 'nullable|max:100',
             'meta_title' => 'nullable|max:200',
             'meta_description' => 'nullable|max:200',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'favicon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+            'favicon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:2048',
         ]);
 
         $general->title=$r->title;
@@ -3212,7 +3205,7 @@ public function userRoles(Request $r){
         }elseif($r->itemtype=='image'){
             $check = $r->validate([
                 'gridColumn' => 'nullable|numeric',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff|max:10240',
             ]);
             
             ///////Image UploadStart////////////
