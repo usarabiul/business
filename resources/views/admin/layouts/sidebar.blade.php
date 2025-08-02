@@ -102,15 +102,8 @@
                 </ul>
             </li>
         </ul>
-        <div class="add-menu-sidebar">
-            <img src="{{asset(assetLinkAdmin().'/assets/images/food-serving.png')}}" alt="/" />
-            <p class="mb-3">Organize your menus through button bellow</p>
-            <span class="fs-12 d-block mb-3">Lorem ipsum dolor sit amet</span>
-            <a href="javascript:void(0)" class="btn btn-secondary btn-rounded" data-bs-toggle="modal" data-bs-target="#addOrderModalside">+Add Menus</a>
-        </div>
         <div class="copyright">
-            <p><strong>Sego Restaurant Admin Dashboard</strong> © 2023 All Rights Reserved</p>
-            <p>Made with <span class="heart"></span> by DexignZone</p>
+            <p><b>Help:</b> +8801743988622</p>
         </div>
     </div>
 </div>

@@ -137,15 +137,6 @@ class User extends Authenticatable
              return 'medies/profile.png';
          }
      }
-     
-     public function imageName(){
-         
-         if($this->imageFile){
-             return $this->imageFile->file_rename;
-         }else{
-             return 'noimage.jpg';
-         }
-     }
  
  
      public function bannerFile(){
@@ -158,15 +149,6 @@ class User extends Authenticatable
              return $this->bannerFile->file_url;
          }else{
              return 'app-assets/images/carousel/22.jpg';
-         }
-     }
-     
-     public function bannerName(){
-         
-         if($this->bannerFile){
-             return $this->bannerFile->file_rename;
-         }else{
-             return 'no-banner.png';
          }
      }
      

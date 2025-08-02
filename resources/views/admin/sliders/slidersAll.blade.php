@@ -34,7 +34,7 @@
                 <table class="table table-responsive-md">
                     <thead>
                         <tr>
-                            <th style="min-width: 100px;width:100px;">SL</th>
+                            <th style="min-width: 50px;width:50px;">SL</th>
                             <th style="min-width: 300px;">Slider Name</th>
                             <th style="max-width: 80px;width:80px;">Image</th>
                             <th style="min-width: 60px;width: 60px;">Action</th>
@@ -43,7 +43,7 @@
                     <tbody>
                         @foreach($sliders as $i=>$slider)
                         <tr>
-                            <td>{{$i+}}</td>
+                            <td>{{$i+1}}</td>
                             <td>
                                 <span>{{$slider->name}} 
                                 @if($slider->location)

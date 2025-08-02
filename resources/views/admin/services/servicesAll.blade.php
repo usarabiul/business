@@ -68,9 +68,9 @@
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
                         <ul class="statuslist">
-                            <li><a href="{{route('admin.services')}}">All ({{$totals->total}})</a></li>
-                            <li><a href="{{route('admin.services',['status'=>'active'])}}">Active ({{$totals->active}})</a></li>
-                            <li><a href="{{route('admin.services',['status'=>'inactive'])}}">Inactive ({{$totals->inactive}})</a></li>
+                            <li><a href="{{route('admin.services')}}">All ({{$total->total}})</a></li>
+                            <li><a href="{{route('admin.services',['status'=>'active'])}}">Active ({{$total->active}})</a></li>
+                            <li><a href="{{route('admin.services',['status'=>'inactive'])}}">Inactive ({{$total->inactive}})</a></li>
                         </ul>
                     </div>
                 </div>

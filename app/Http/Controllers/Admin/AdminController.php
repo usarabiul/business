@@ -57,85 +57,6 @@ class AdminController extends Controller
     }
     
     public function dashboard(){
-        // $datas = [];
-        // return PostExtra::count();
-        // $apiUrl = 'https://randomuser.me/api/1.4/?results=250';
-        // $datasApi =null;
-        //         try {
-        //             $ch = curl_init();
-        
-        //             // Set cURL options
-        //             curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        //             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        //             // Additional options if needed...
-        
-        //             // Execute cURL session and capture the output
-        //             $apiResponse = curl_exec($ch);
-        
-        //             // Check for cURL errors
-        //             if (curl_errno($ch)) {
-        //                 throw new \Exception('Curl error: ' . curl_error($ch));
-        //             }
-        
-        //             // Close cURL session
-        //             curl_close($ch);
-        
-        //             // Process and use the $apiResponse as needed
-        //             $datasApi = json_decode($apiResponse, true);
-        //         } catch (\Exception $e) {
-        //             // Handle any exceptions that occur during the cURL request
-        //             //return response()->json(['error' => $e->getMessage()], 500);
-        //         }
-                
-                // if($datasApi){
-
-                //     foreach($datasApi['results'] as $result){
-                //         $name =null;
-                //         if(isset($result['name']['title'])){
-                //             $name .=$result['name']['title'];
-                //         }
-                //         if(isset($result['name']['first'])){
-                //             $name .=' '.$result['name']['first'];
-                //         }
-                //         if(isset($result['name']['last'])){
-                //             $name .=' '.$result['name']['last'];
-                //         }
-                //         $email =null;
-                //         if(isset($result['email'])){
-                //             $email .=$result['email'];
-                //         }
-                        
-                //         $datas[] = [
-                //         'name' => $name,
-                //         'email' => $email,
-                //         'status' => 'active',
-                //         'type' => 0,
-                //         'addedby_id' => Auth::id(),
-                //         ];
-
-                //     }
-                // }
-        // Insert data into the database
-        //PostExtra::insert($datas);
-               
-     
-        //         return 'stopo';
-        // for ($i = 1; $i <= 10000; $i++) {
-        //     $datas[] = [
-        //         'name' => 'Name ' . $i+40000,
-        //         'content' => 'Content ' . $i+40000,
-        //         'drag' => $i+40000,
-        //         'status' => 'active',
-        //         'type' => 0,
-        //         'addedby_id' => Auth::id(),
-        //         // Add other fields as needed
-        //     ];
-        // }
-
-        // // Insert data into the database
-        // PostExtra::insert($datas);
-        
-        // return PostExtra::where('type',0)->select(['name as namefile','status as statusName',DB::raw('COUNT(*) as rowcount')])->limit(100)->get();
         ///Reports  Summery Dashboard
         $services30Days=Post::where('type',3)
         ->where('status','<>','temp')
@@ -179,7 +100,7 @@ class AdminController extends Controller
       if($r->isMethod('post')){
         if($r->actionType=='profile'){
           $check = $r->validate([
-            'name' => 'required|max:100|unique:users,name,'.$user->id,
+            'name' => 'required|max:100',
             'email' => 'required|max:100|unique:users,email,'.$user->id,
             'mobile' => 'nullable|max:20|unique:users,mobile,'.$user->id,
             'gender' => 'nullable|max:10',
@@ -336,7 +257,6 @@ class AdminController extends Controller
      $files=$r->file('images');
       if($files){
           foreach($files as $file){
-
               $file =$file;
               $src  =null;
               $srcType  =0;
@@ -344,7 +264,6 @@ class AdminController extends Controller
               $fileStatus=false;
               $author=Auth::id();
               uploadFile($file,$src,$srcType,$fileUse,$author,$fileStatus);
-              
           }
       }
 
@@ -353,23 +272,22 @@ class AdminController extends Controller
      
   }
     
-    public function mediesFileUpload(Request $request){
-        
-        
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('/'), $fileName);
-        }
+  public function mediesFileUpload(Request $request){
+  
+      if ($request->hasFile('file')) {
+          $file = $request->file('file');
+          $fileName = time().'.'.$file->getClientOriginalExtension();
+          $file->move(public_path('/'), $fileName);
+      }
 
-        
-        
-        if($request->ajax()){
-            return Response()->json([
-                  'success' => true,
-              ]);
-        }
-    }
+      
+      
+      if($request->ajax()){
+          return Response()->json([
+                'success' => true,
+            ]);
+      }
+  }
    
     
   public function mediesEdit(Request $r, $id){
@@ -543,7 +461,7 @@ class AdminController extends Controller
     ]);
 
     //Total Count Result
-    $total = DB::table('posts')->where('status','<>','temp')
+    $total = Post::where('status','<>','temp')
     ->where('type',0)
     ->selectRaw('count(*) as total')
     ->selectRaw("count(case when status = 'active' then 1 end) as active")
@@ -594,7 +512,6 @@ class AdminController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,webp|max:2048',
             'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,webp|max:2048',
         ]);
-
 
         $page->name=$r->name;
         $page->short_description=$r->short_description;
@@ -706,121 +623,120 @@ class AdminController extends Controller
 
 // Services Management Function
 
-    public function services(Request $r){
+  public function services(Request $r){
 
-      $allPer = empty(json_decode(Auth::user()->permission->permission, true)['services']['all']);
-      // Filter Action Start
+    $allPer = empty(json_decode(Auth::user()->permission->permission, true)['services']['all']);
+    // Filter Action Start
 
-      if($r->action){
-        if($r->checkid){
+    if($r->action){
+      if($r->checkid){
 
-        $datas=Post::latest()->where('type',3)->whereIn('id',$r->checkid)->get();
+      $datas=Post::latest()->where('type',3)->whereIn('id',$r->checkid)->get();
 
-        foreach($datas as $data){
+      foreach($datas as $data){
 
-          if($allPer && $data->addedby_id!=Auth::id()){
-            // You are unauthorized Try!!
-          }else{
+        if($allPer && $data->addedby_id!=Auth::id()){
+          // You are unauthorized Try!!
+        }else{
 
-            if($r->action==1){
-              $data->status='active';
-              $data->save();
-            }elseif($r->action==2){
-              $data->status='inactive';
-              $data->save();
-            }elseif($r->action==3){
-              $data->fetured=true;
-              $data->save();
-            }elseif($r->action==4){
-              $data->fetured=false;
-              $data->save();
-            }elseif($r->action==5){
-              
-              $medias =Media::latest()->where('src_type',1)->where('src_id',$data->id)->get();
-              
-              foreach($medias as $media){
-                if(File::exists($media->file_url)){
-                  File::delete($media->file_url);
-                }
-                $media->delete();
+          if($r->action==1){
+            $data->status='active';
+            $data->save();
+          }elseif($r->action==2){
+            $data->status='inactive';
+            $data->save();
+          }elseif($r->action==3){
+            $data->fetured=true;
+            $data->save();
+          }elseif($r->action==4){
+            $data->fetured=false;
+            $data->save();
+          }elseif($r->action==5){
+            
+            $medias =Media::latest()->where('src_type',1)->where('src_id',$data->id)->get();
+            
+            foreach($medias as $media){
+              if(File::exists($media->file_url)){
+                File::delete($media->file_url);
               }
-
-              $data->serviceCtgs()->delete();
-              $data->postTags()->delete();
-              $data->delete();
+              $media->delete();
             }
 
+            $data->serviceCtgs()->delete();
+            $data->postTags()->delete();
+            $data->delete();
           }
 
         }
 
-        Session()->flash('success','Action Successfully Completed!');
-
-        }else{
-          Session()->flash('info','Please Need To Select Minimum One Post');
-        }
-
-        return redirect()->back();
       }
 
-      //Filter Action End
+      Session()->flash('success','Action Successfully Completed!');
 
-      $services =Post::latest()->where('type',3)->where('status','<>','temp')
-        ->where(function($q) use ($r,$allPer) {
+      }else{
+        Session()->flash('info','Please Need To Select Minimum One Post');
+      }
 
-            if($r->search){
-                $q->where('name','LIKE','%'.$r->search.'%')
-                ->orWhereHas('serviceCategories',function($qq)use($r){
-                  $qq->where('name','LIKE','%'.$r->search.'%');
-                });
-            }
-            
-            if($r->startDate || $r->endDate)
-            {
-                if($r->startDate){
-                    $from =$r->startDate;
-                }else{
-                    $from=Carbon::now()->format('Y-m-d');
-                }
-
-                if($r->endDate){
-                    $to =$r->endDate;
-                }else{
-                    $to=Carbon::now()->format('Y-m-d');
-                }
-
-                $q->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to);
-            }
-
-            if($r->status){
-             $q->where('status',$r->status); 
-            }
-
-            // Check Permission
-            if($allPer){
-             $q->where('addedby_id',auth::id()); 
-            }
-
-
-        })
-        ->select(['id','name','slug','view','type','created_at','addedby_id','status','featured'])
-        ->paginate(25)->appends([
-          'search'=>$r->search,
-          'status'=>$r->status,
-          'startDate'=>$r->startDate,
-          'endDate'=>$r->endDate,
-        ]);
-
-        //Total Count Results
-        $totals = DB::table('posts')
-        ->where('type',3)->where('status','<>','temp')
-        ->selectRaw('count(*) as total')
-        ->selectRaw("count(case when status = 'active' then 1 end) as active")
-        ->selectRaw("count(case when status = 'inactive' then 1 end) as inactive")
-        ->first();
-
-        return view(adminTheme().'services.servicesAll',compact('services','totals'));
+      return redirect()->back();
     }
+
+    //Filter Action End
+
+    $services =Post::latest()->where('type',3)->where('status','<>','temp')
+      ->where(function($q) use ($r,$allPer) {
+
+          if($r->search){
+              $q->where('name','LIKE','%'.$r->search.'%')
+              ->orWhereHas('serviceCategories',function($qq)use($r){
+                $qq->where('name','LIKE','%'.$r->search.'%');
+              });
+          }
+          
+          if($r->startDate || $r->endDate)
+          {
+              if($r->startDate){
+                  $from =$r->startDate;
+              }else{
+                  $from=Carbon::now()->format('Y-m-d');
+              }
+
+              if($r->endDate){
+                  $to =$r->endDate;
+              }else{
+                  $to=Carbon::now()->format('Y-m-d');
+              }
+
+              $q->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to);
+          }
+
+          if($r->status){
+            $q->where('status',$r->status); 
+          }
+
+          // Check Permission
+          if($allPer){
+            $q->where('addedby_id',auth::id()); 
+          }
+
+
+      })
+      ->select(['id','name','slug','view','type','created_at','addedby_id','status','featured'])
+      ->paginate(25)->appends([
+        'search'=>$r->search,
+        'status'=>$r->status,
+        'startDate'=>$r->startDate,
+        'endDate'=>$r->endDate,
+      ]);
+
+      //Total Count Results
+      $total = Post::where('type',3)->where('status','<>','temp')
+      ->selectRaw('count(*) as total')
+      ->selectRaw("count(case when status = 'active' then 1 end) as active")
+      ->selectRaw("count(case when status = 'inactive' then 1 end) as inactive")
+      ->first();
+
+      return view(adminTheme().'services.servicesAll',compact('services','total'));
+  }
     
     public function servicesAction(Request $r,$action,$id=null){
         
@@ -975,7 +891,6 @@ class AdminController extends Controller
       
         return view(adminTheme().'services.servicesEdit',compact('service','categories','tags','brands'));
         
-        
     }
 
   // Services Management Function End
@@ -1069,15 +984,14 @@ class AdminController extends Controller
         ]);
 
     //Total Count Results
-    $totals = DB::table('attributes')
-    ->where('type',0)->where('status','<>','temp')
+    $total = Attribute::where('type',0)->where('status','<>','temp')
     ->selectRaw('count(*) as total')
     ->selectRaw("count(case when status = 'active' then 1 end) as active")
     ->selectRaw("count(case when status = 'inactive' then 1 end) as inactive")
     ->first();
 
       
-    return view(adminTheme().'services.category.servicesCategories',compact('categories','totals'));
+    return view(adminTheme().'services.category.servicesCategories',compact('categories','total'));
 
     }
     
@@ -1301,14 +1215,13 @@ class AdminController extends Controller
       ]);
 
       //Total Count Results
-      $totals = DB::table('attributes')
-      ->where('type',3)
+      $total = Attribute::where('type',3)
       ->selectRaw('count(*) as total')
       ->selectRaw("count(case when status = 'active' then 1 end) as active")
       ->selectRaw("count(case when status = 'inactive' then 1 end) as inactive")
       ->first();
 
-      return view(adminTheme().'clients.clientsAll',compact('clients','totals'));
+      return view(adminTheme().'clients.clientsAll',compact('clients','total'));
     }
 
     public function clientsAction(Request $r,$action,$id=null){
@@ -1521,14 +1434,13 @@ class AdminController extends Controller
       ]);
 
       //Total Count Results
-      $totals = DB::table('attributes')
-      ->where('type',2)
+      $total = Attribute::where('type',2)->where('status','<>','temp')
       ->selectRaw('count(*) as total')
       ->selectRaw("count(case when status = 'active' then 1 end) as active")
       ->selectRaw("count(case when status = 'inactive' then 1 end) as inactive")
       ->first();
 
-      return view(adminTheme().'brands.brandsAll',compact('brands','totals'));
+      return view(adminTheme().'brands.brandsAll',compact('brands','total'));
 
     }
 
@@ -2227,7 +2139,7 @@ class AdminController extends Controller
       ]);
 
       //Total Count Results
-      $totals = DB::table('users')->whereIn('status',[0,1])->where('admin',true)
+      $total = User::whereIn('status',[0,1])->where('admin',true)
       ->selectRaw('count(*) as total')
       ->selectRaw("count(case when status = 1 then 1 end) as active")
       ->selectRaw("count(case when status = 0 then 1 end) as inactive")
@@ -2235,7 +2147,7 @@ class AdminController extends Controller
       
       $roles =Permission::latest()->where('status','active')->get();
 
-      return view(adminTheme().'users.admins.users',compact('users','totals','roles'));
+      return view(adminTheme().'users.admins.users',compact('users','total','roles'));
     }
   
     public function usersAdminAction (Request $r,$action,$id=null){
@@ -2456,13 +2368,13 @@ class AdminController extends Controller
         ]);
 
       //Total Count Results
-      $totals = DB::table('users')->whereIn('status',[0,1])
+      $total = User::whereIn('status',[0,1])
       ->selectRaw('count(*) as total')
       ->selectRaw("count(case when status = 1 then 1 end) as active")
       ->selectRaw("count(case when status = 0 then 1 end) as inactive")
       ->first();
   
-      return view(adminTheme().'users.customers.users',compact('users','totals'));
+      return view(adminTheme().'users.customers.users',compact('users','total'));
     }
   
   

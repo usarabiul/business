@@ -61,15 +61,6 @@ class Post extends Model
             return 'medies/noimage.jpg';
         }
     }
-    
-    public function imageName(){
-        
-        if($this->imageFile){
-            return $this->imageFile->file_rename;
-        }else{
-            return 'noimage.jpg';
-        }
-    }
 
     public function bannerFile(){
         return $this->hasOne(Media::class,'src_id')->where('src_type',1)->where('use_Of_file',2);
@@ -80,15 +71,6 @@ class Post extends Model
             return $this->bannerFile->file_url;
         }else{
             return 'medies/no-banner.png';
-        }
-    }
-    
-    public function bannerName(){
-        
-        if($this->bannerFile){
-            return $this->bannerFile->file_rename;
-        }else{
-            return 'no-banner.png';
         }
     }
 
@@ -155,11 +137,7 @@ class Post extends Model
     }
 
     //Services Category Functions End
-    
-    public function hasNitEditorContent(){
-    	return $this->hasMany(PostContentElement::class,'src_id')->where('parent_id',null)->orderBy('drag');
-    }
-    
+
     
     public function user(){
     	return $this->belongsTo(User::class,'addedby_id');
