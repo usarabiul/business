@@ -58,20 +58,16 @@ class AdminController extends Controller
     
     public function dashboard(){
         ///Reports  Summery Dashboard
-        $services30Days=Post::where('type',3)
-        ->where('status','<>','temp')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
+        $servicesTotal=Post::where('type',3)
+        ->where('status','active')
         ->count();
 
-        $posts30Days=Post::where('type',1)
-        ->where('status','<>','temp')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
+        $postsTotal=Post::where('type',1)
+        ->where('status','active')
         ->count();
 
         $pagesTotal=Post::where('type',0)
-        ->where('status','<>','temp')
+        ->where('status','active')
         ->count();
 
         $userTotal=User::where('customer',true)
@@ -79,8 +75,8 @@ class AdminController extends Controller
         ->count();
 
         $reports=array(
-                    "services"=>$services30Days,
-                    "posts"=>$posts30Days,
+                    "services"=>$servicesTotal,
+                    "posts"=>$postsTotal,
                     "pages"=>$pagesTotal,
                     "users"=>$userTotal,
                 );
