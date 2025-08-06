@@ -146,7 +146,7 @@
                         <div class="row">
                             <div class="mb-3 col-6">
                                 <label class="form-label">Status</label>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" class="form-check-input" name="status" {{$category->status=='active'?'checked':''}} >Active
                                     </label>
@@ -154,7 +154,7 @@
                             </div>
                             <div class="mb-3 col-6">
                                 <label class="form-label">Featured</label>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" class="form-check-input" name="featured" {{$category->featured?'checked':''}} >Active
                                     </label>
@@ -179,20 +179,7 @@
 @endsection @push('js')
 
 <script>
-    $(".summernote").summernote({
-        placeholder: "Write Content Here..",
-        tabsize: 2,
-        height: 120,
-        toolbar: [
-            ["style", ["style"]],
-            ["font", ["bold", "underline"]],
-            ["color", ["color"]],
-            ["para", ["ul", "ol", "paragraph"]],
-            ["table", ["table"]],
-            ["insert", ["link", "picture"]],
-            ["view", ["fullscreen", "codeview"]],
-        ],
-    });
+
 </script>
 
 @endpush
