@@ -70,12 +70,12 @@
                             <button class="btn btn-sm btn-primary rounded-0" onclick="return confirm('Are You Want To Action?')">Action</button>
                         </div>
                     </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <ul class="statuslist">
-                            <li><a href="{{route('admin.posts')}}">All ({{$totals->total}})</a></li>
-                            <li><a href="{{route('admin.posts',['status'=>'active'])}}">Active ({{$totals->active}})</a></li>
-                            <li><a href="{{route('admin.posts',['status'=>'inactive'])}}">Inactive ({{$totals->inactive}})</a></li>
+                            <li><a href="{{route('admin.posts')}}">All ({{$total->total}})</a></li>
+                            <li><a href="{{route('admin.posts',['status'=>'active'])}}">Active ({{$total->active}})</a></li>
+                            <li><a href="{{route('admin.posts',['status'=>'inactive'])}}">Inactive ({{$total->inactive}})</a></li>
+                            <li><a href="{{route('admin.posts',['status'=>'featured'])}}" style="border-color: #faca51;background: #fff6de;">Featured ({{$total->featured}})</a></li>
                         </ul>
                     </div>
                 </div>

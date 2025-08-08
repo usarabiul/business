@@ -628,7 +628,6 @@ class AdminController extends Controller
       if($r->checkid){
 
       $datas=Post::latest()->where('type',3)->whereIn('id',$r->checkid)->get();
-
       foreach($datas as $data){
 
         if($allPer && $data->addedby_id!=Auth::id()){

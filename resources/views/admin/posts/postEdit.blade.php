@@ -64,12 +64,14 @@
                         </div>
                         <div class="mb-3 input-group">
                             <label class="slugEdit" for="slug" style="color: #3F51B5;cursor: pointer;width: 130px;padding: 3px;"><span>{{$post->auto_slug?'Custom Slug':'Auto Slug'}} </span> <i class="fa fa-edit"></i></label>
-                            <input type="text" class="slugEditData form-control {{$errors->has('slug')?'error':''}}"
-                                @if($post->auto_slug) 
-                                    name="slug"
-                                    style="display:block;"
-                                @endif
-                            placeholder="Post Slug" value="{{$post->slug?:old('slug')}}" />
+                            <input type="text" 
+                            class="slugEditData form-control {{$errors->has('slug')?'error':''}}"
+                            placeholder="Post Slug" value="{{$post->slug?:old('slug')}}"
+                            @if($post->auto_slug) 
+                                name="slug"
+                                style="display:block;"
+                            @endif
+                            />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Short Description </label>
@@ -196,9 +198,8 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
+                        <label class="form-label">Tag Comma (,) multiple</label>
                         <textarea id="hero-demo" name="tagskey">{!!$post->tags?:old('tagskey')!!}</textarea>
-                        
-                        
                         <!--@if ($errors->has('tags*'))-->
                         <!--<p style="color: red; margin: 0; font-size: 10px;">The Tags Must Be a Number</p>-->
                         <!--@endif-->
@@ -259,9 +260,6 @@
             placeholder: 'Enter tags ...',
         });
     });
-</script>
-<script>
-   
 </script>
 
 @endpush
