@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Auth;
 use Str;
 use File;
-use DB;
 use Session;
 use Redirect,Response;
 use Carbon\Carbon;
@@ -109,7 +108,7 @@ class PostsController extends Controller
       ]);
       
       //Total Count Results
-      $total= DB::table('posts')->where('status','<>','temp')
+      $total= Post::where('status','<>','temp')
       ->where('type',1)
       ->selectRaw('count(*) as total')
       ->selectRaw("count(case when status = 'active' then 1 end) as active")
@@ -361,30 +360,12 @@ class PostsController extends Controller
     }
 
     public function postsComments(Request $r,$id){
-      
-      $post =Post::where('type',1)->find($id);
-      if(!$post){
-        Session()->flash('error','This Post Are Not Found');
-        return redirect()->route('admin.posts');
-      }
-
-      //Add Comment Post  Start
-      if($r->actionType=='addComment'){
-        $comment =Review::where('type',1)->where('addedby_id',Auth::id())->where('src_id',$post->id)->where('status','temp')->first();
-        if(!$comment){
-        $comment =new Review();
-        $comment->type =1;
-        $comment->src_id =$post->id;
-        $comment->addedby_id =Auth::id();
-        $comment->save();
-        }else{
-        $comment->created_at =Carbon::now();
-        $comment->save();
+        $post =Post::where('type',1)->find($id);
+        if(!$post){
+          Session()->flash('error','This Post Are Not Found');
+          return redirect()->route('admin.posts');
         }
-        return redirect()->route('admin.postsCommentsAction',['edit',$comment->id]);
-      }
-      //Add Comment Post  End
-
+    
       // Filter Action Start
 
       if($r->action){
@@ -438,7 +419,7 @@ class PostsController extends Controller
             }
 
       })
-      ->select(['id','src_id','parent_id','name','email','title','website','content','type','status','addedby_id','created_at'])
+      ->select(['id','src_id','parent_id','name','email','title','website','description','type','status','addedby_id','created_at'])
       ->paginate(25)->appends([
         'search'=>$r->search,
       ]);;
@@ -447,6 +428,31 @@ class PostsController extends Controller
     }
 
     public function postsCommentsAction(Request $r,$action,$id){
+
+      
+
+      //Add Comment Post  Start
+      if($action=='create'){
+        $post =Post::where('type',1)->find($id);
+        if(!$post){
+          Session()->flash('error','This Post Are Not Found');
+          return redirect()->route('admin.posts');
+        }
+        $comment =Review::where('type',1)->where('addedby_id',Auth::id())->where('src_id',$post->id)->where('status','temp')->first();
+        if(!$comment){
+          $comment =new Review();
+          $comment->type =1;
+          $comment->status ='temp';
+          $comment->src_id =$post->id;
+          $comment->addedby_id =Auth::id();
+          $comment->save();
+        }
+        $comment->created_at =Carbon::now();
+        $comment->save();
+
+        return redirect()->route('admin.postsCommentsAction',['edit',$comment->id]);
+      }
+      //Add Comment Post  End
 
       $comment =Review::where('type',1)->find($id);
       if(!$comment){
@@ -503,20 +509,14 @@ class PostsController extends Controller
           'name' => 'required|max:191',
           'email' => 'nullable|max:100',
           'website' => 'nullable|max:200',
-        ]);      
-
-        if($comment->status=='temp' && $comment->post){
-          $post =$comment->post;
-          $post->review+=1;
-          $post->save();
-        }
+        ]); 
 
         $comment->name=$r->name;
         $comment->email=$r->email;
         $comment->website=$r->website;
-        $comment->content=$r->content;
+        $comment->description=$r->content;
         $comment->status =$r->status?'active':'inactive';
-        $comment->fetured =$r->fetured?true:false;
+        $comment->featured =$r->featured?true:false;
         $comment->editedby_id=Auth::id();
         $comment->save();
 
@@ -547,9 +547,7 @@ class PostsController extends Controller
 
     //Post Category Function
     public function postsCategories(Request $r){
-
-    // Filter Action Start
-
+      // Filter Action Start
       if($r->action){
         if($r->checkid){
 
@@ -599,22 +597,21 @@ class PostsController extends Controller
         return redirect()->back();
       }
 
-    //Filter Action End
+      //Filter Action End
+      $categories =Attribute::latest()->where('type',6)->where('status','<>','temp')
+      ->where(function($q) use ($r) {
 
-    $categories =Attribute::latest()->where('type',6)->where('status','<>','temp')
-    ->where(function($q) use ($r) {
+          if($r->search){
+                $q->where('name','LIKE','%'.$r->search.'%');
+          }
 
-        if($r->search){
-              $q->where('name','LIKE','%'.$r->search.'%');
-        }
-
-    })
-    ->select(['id','name','slug','parent_id','status','addedby_id','created_at'])
-    ->paginate(25)->appends([
-        'search'=>$r->search,
-      ]);
+      })
+      ->select(['id','name','slug','parent_id','status','featured','addedby_id','created_at'])
+      ->paginate(25)->appends([
+          'search'=>$r->search,
+        ]);
       
-    return view(adminTheme().'posts.category.postsCategories',compact('categories'));
+      return view(adminTheme().'posts.category.postsCategories',compact('categories'));
 
     }
 

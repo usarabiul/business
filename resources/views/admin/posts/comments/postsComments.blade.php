@@ -29,7 +29,7 @@
     </div>
     <div class="col-md-6">
         <div class="text-start text-md-end mb-3">
-			<a href="{{route('admin.postsComments',[$post->id,'actionType'=>'addComment'])}}" class="btn btn-info"><i class="fa-solid fa-plus"></i> Add Comment</a>
+			<a href="{{route('admin.postsCommentsAction',['create',$post->id])}}" class="btn btn-info"><i class="fa-solid fa-plus"></i> Add Comment</a>
             <a href="{{route('admin.postsCommentsAll')}}" class="btn btn-success">
                 <i class="fa-solid fa-rotate"></i>
             </a>
