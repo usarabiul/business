@@ -476,9 +476,9 @@ class PostsController extends Controller
           $replay->name=$r->name;
           $replay->email=$r->email;
           $replay->website=$r->website;
-          $replay->content=$r->content;
+          $replay->description=$r->content;
           $replay->status =$r->status?'active':'inactive';
-          $replay->fetured =$r->fetured?true:false;
+          $replay->featured =$r->fetured?true:false;
           $replay->addedby_id=Auth::id();
           $replay->type=1;
           $replay->save();

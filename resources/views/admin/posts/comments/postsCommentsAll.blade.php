@@ -24,7 +24,7 @@
         <div class="page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
-                <li class="breadcrumb-item">Comments List</li>
+				<li class="breadcrumb-item">Comments List</li>
             </ol>
         </div>
     </div>
@@ -77,11 +77,13 @@
 			<table class="table table-responsive-md" >
 				<thead>
 					<tr>
-						<th width="5%"></th>
-						<th width="20%">Author</th>
+						<th style="min-width: 100px;width:100px;">
+							 <label>
+								<input type="checkbox" class="form-check-input m-0" id="checkall"  > All <span class="checkCounter"></span>
+							</label>
+						</th>
+						<th>Author</th>
 						<th>Comments</th>
-						<th width="20%">In Response To</th>
-						<th width="25%">Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -107,39 +109,35 @@
 						
 						<br>
 						@if($comment->status=='active')
-						<span><i class="fa fa-check" style="color: #1ab394;"></i></span>
-						<a href="{{route('admin.postsCommentsAction',['status',$comment->id])}}" class="badge btn-danger" style="color: black !important;">Unapprove</a>
+						<span class="badge badge-success">Active </span>
+						@elseif($comment->status=='inactive')
+						<span class="badge badge-danger">Inactive </span>
 						@else
-						<span><i class="fa fa-times" style="color: #ed5565;"></i></span>
-						<a href="{{route('admin.postsCommentsAction',['status',$comment->id])}}"  class="badge btn-success">Approved</a>
+						<span class="badge badge-danger">Draft </span>
 						@endif
-						
-						</td>
-						<td>
-						<span>
-						{!!$comment->content!!}
-						</span>
+						<a href="{{route('admin.postsCommentsAction',['edit',$comment->id])}}" class="badge badge-danger">Edit</a>
+						<a href="{{route('admin.postsCommentsAction',['replay',$comment->id])}}" class="badge badge-info"><i class="fa fa-reply"></i></a>
+						<a href="{{route('admin.postsCommentsAction',['delete',$comment->id])}}" onclick="return confirm('Are You Want To Delete?')" class="badge badge-danger" ><i class="fa fa-trash"></i></a>
+  						<br>
+						<span>{{$comment->created_at->format('d-m-Y h:i A')}}</span>       
 						</td>
 						<td>
 							@if($comment->post)
 							<a href="{{route('admin.postsAction',['edit',$comment->post->id])}}" target="_blank">{{$comment->post->name}}</a>
+  							<br>
+							<a href="{{route('blogView',$comment->post->slug)}}" target="_blank" class="badge badge-info"><i class="fa fa-external-link"></i></a>
+							<a href="{{route('admin.postsComments',$comment->post->id)}}" class="badge badge-success"><i class="fa fa-comments"></i> ({{$comment->post->postComments->where('status','<>','temp')->count()}})</a>
 							<br>
-							<a href="{{route('blogView',$comment->post->slug)}}" target="_blank" class="badge btn-info">Post View</a><br>
-							<a href="{{route('admin.postsComments',$comment->post->id)}}" class="badge badge-success"><i class="fa fa-comments"></i> View ({{$comment->post->postComments->where('status','<>','temp')->count()}})</a>
 							@endif
-						</td>
-						<td class="center">
-						<a href="{{route('admin.postsCommentsAction',['edit',$comment->id])}}" class="btn btn-md btn-info">Edit</a>
-						<a href="{{route('admin.postsCommentsAction',['replay',$comment->id])}}" class="btn btn-md btn-info"><i class="fa fa-reply"></i></a>
-						<a href="{{route('admin.postsCommentsAction',['delete',$comment->id])}}" onclick="return confirm('Are You Want To Delete?')" class="btn btn-md btn-danger" ><i class="fa fa-trash"></i></a>
-							<br>
-							<span>{{$comment->created_at->format('d-m-Y h:i A')}}</span>       
+							<span>
+							{!!$comment->description!!}
+							</span>
 						</td>
 					</tr>
 					@endforeach
 					@if($comments->count()==0)
 					<tr>
-						<td colspan="5" style="text-align: center;">No Record Found</td>
+						<td colspan="3" style="text-align: center;">No Record Found</td>
 					</tr>
 					@endif
 				</tbody>
