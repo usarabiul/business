@@ -292,13 +292,9 @@ class PostsController extends Controller
       
       return view(adminTheme().'posts.postEdit',compact('post','categories','tags'));
     }
-
-
     //Post Function End
 
-
     //Post Comments Function Start
-
     public function postsCommentsAll(Request $r){
 
       // Filter Action Start
