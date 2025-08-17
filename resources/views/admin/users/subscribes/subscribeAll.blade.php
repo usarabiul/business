@@ -70,6 +70,7 @@
 					<thead>
 						<tr>
 							<th style="min-width: 100px; width: 100px;">
+								
                                 <label> 
                                     <input type="checkbox" class="form-check-input m-0" id="checkall"  > All <span class="checkCounter"></span>     
                                 </label>
@@ -82,10 +83,12 @@
 						@foreach($subscribes as $i=>$subscribe)
 						<tr>
 							<th>
-							<input class="checkbox" type="checkbox" name="checkid[]" value="{{$subscribe->id}}">
-							{{$subscribes->currentpage()==1?$i+1:$i+($subscribes->perpage()*($subscribes->currentpage() - 1))+1}}
+								<label>
+                                    <input type="checkbox" class="form-check-input" name="checkid[]" value="{{$subscribe->id}}" style="margin-top: 0;" >
+								</label>
+								{{$subscribes->currentpage()==1?$i+1:$i+($subscribes->perpage()*($subscribes->currentpage() - 1))+1}}
 							</th>
-							<td>{{$subscribe->name}}</td>
+							<td>{{$subscribe->email}}</td>
 							<td>{{$subscribe->created_at->format('d-m-Y')}}</td>
 						</tr>
 						@endforeach

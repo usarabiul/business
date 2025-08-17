@@ -15,10 +15,10 @@
     <link rel="apple-touch-icon" href="{{asset(general()->favicon())}}" />
     <link rel="shortcut icon" type="image/x-icon" href="{{asset(general()->favicon())}}" />
      <!-- BEGIN: Theme JS-->
-    <link href="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
-	  <link href="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-datepicker-master/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
-    <link href="{{asset(assetLinkAdmin().'/assets/css/tag-editor.css')}}" rel="stylesheet">
-    <link href="{{asset(assetLinkAdmin().'/assets/css/style.css')}}" rel="stylesheet">
+    <link href="{{asset(assetLinkAdmin().'/vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
+	  <link href="{{asset(assetLinkAdmin().'/vendor/bootstrap-datepicker-master/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <link href="{{asset(assetLinkAdmin().'/css/tag-editor.css')}}" rel="stylesheet">
+    <link href="{{asset(assetLinkAdmin().'/css/style.css')}}" rel="stylesheet">
 	  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
     <style type="text/css">
@@ -101,16 +101,16 @@
         </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Required vendors -->
-    <script src="{{asset(assetLinkAdmin().'/assets/vendor/global/global.min.js')}}"></script>
-	  <script src="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/assets/vendor/bootstrap-datepicker-master/js/bootstrap-datepicker.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/assets/js/custom.min.js')}}"></script>
-	  <script src="{{asset(assetLinkAdmin().'/assets/js/deznav-init.js')}}"></script>
+    <script src="{{asset(assetLinkAdmin().'/vendor/global/global.min.js')}}"></script>
+	  <script src="{{asset(assetLinkAdmin().'/vendor/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
+    <script src="{{asset(assetLinkAdmin().'/vendor/bootstrap-datepicker-master/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset(assetLinkAdmin().'/js/custom.min.js')}}"></script>
+	  <script src="{{asset(assetLinkAdmin().'/js/deznav-init.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
 	  <!-- Dashboard 1 -->
-	  <script src="{{asset(assetLinkAdmin().'/assets/js/dashboard/dashboard-1.js')}}"></script>
+	  <script src="{{asset(assetLinkAdmin().'/js/dashboard/dashboard-1.js')}}"></script>
 
-     <script src="{{asset(assetLinkAdmin().'/assets/js/tag-editor.js')}}"></script>
+     <script src="{{asset(assetLinkAdmin().'/js/tag-editor.js')}}"></script>
      <script src="{{asset('tinymce/tinymce.min.js')}}"></script>
     
      <script>

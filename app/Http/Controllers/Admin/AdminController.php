@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\Transaction;
 use App\Models\PostExtra;
+use App\Models\Subscriber;
 use App\Models\Review;
 use App\Models\General;
 use App\Models\Country;
@@ -2506,7 +2507,7 @@ class AdminController extends Controller
       if($r->action){
         if($r->checkid){
 
-        PostExtra::latest()->where('type',1)->whereIn('id',$r->checkid)->delete();
+        Subscriber::latest()->whereIn('id',$r->checkid)->delete();
 
         Session()->flash('success','Action Successfully Completed!');
 
@@ -2519,11 +2520,11 @@ class AdminController extends Controller
 
       //Filter Action End
 
-    $subscribes =PostExtra::where('type',1)
+    $subscribes =Subscriber::latest()
     ->where(function($q) use ($r){
 
       if($r->search){
-            $q->where('name','LIKE','%'.$r->search.'%');
+            $q->where('email','LIKE','%'.$r->search.'%');
       }
         
       if($r->startDate || $r->endDate)
@@ -2544,7 +2545,6 @@ class AdminController extends Controller
         }
 
     })
-    ->select(['id','name','created_at'])
     ->paginate(50)->appends([
       'search'=>$r->search,
       'startDate'=>$r->startDate,
